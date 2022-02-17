@@ -49,3 +49,8 @@ target/
 .classpath
 .project
 .settings/
+
+##############################
+## Timings example
+##############################
+timings.txt
