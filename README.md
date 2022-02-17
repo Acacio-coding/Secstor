@@ -12,7 +12,7 @@ O objetivo é desenvolver uma biblioteca ou uma api para a utilização de algor
 Utilize o comando abaixo:
 
 ```
-git clone https://github.com/Acacio-coding/Rede-Soliedariedade
+git clone https://github.com/Acacio-coding/Secstor
 ```
 
 Agora siga os seguintes passos:
