@@ -59,7 +59,7 @@ public class EngineMaker {
             return this.krawczyk.reconstruct();
 
         if (algorithm.equalsIgnoreCase("pvss") && !this.pvss.getPieces().isEmpty())
-            return this.krawczyk.reconstruct();
+            return this.pvss.reconstruct();
 
         throw new NotSplittedException("You need to split the shares in order to reconstruct them!");
     }

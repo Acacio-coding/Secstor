@@ -1,7 +1,5 @@
 package com.br.ifsc.facade;
 
-import com.at.archistar.crypto.secretsharing.ReconstructionException;
-import com.br.ifsc.facade.Engine;
 import com.br.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
 import com.br.ufsc.das.gcseg.secretsharing.SecretShareEngine;
 import com.br.ufsc.das.gcseg.secretsharing.SharestoCombine;
@@ -35,6 +33,11 @@ public class PVSSEngine implements Engine {
     public String reconstruct() throws UnsupportedEncodingException, InvalidVSSScheme {
         this.sharestoCombine.setModulus(shares.getModulus());
         this.sharestoCombine.setKey(shares.getKey());
+
+        for (String splitedShare : this.shares.getShareString()) {
+            this.sharestoCombine.addShare(splitedShare);
+        }
+
         return engine.combine(this.sharestoCombine);
     }
 

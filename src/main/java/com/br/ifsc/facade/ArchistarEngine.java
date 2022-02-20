@@ -20,7 +20,7 @@ public class ArchistarEngine implements Engine {
     }
 
     public String getEngine() {
-        return engine.toString();
+        return this.engine.toString();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ArchistarEngine implements Engine {
     @Override
     public String reconstruct() throws ReconstructionException {
         this.result = engine.reconstruct(this.shares);
-        return new String(result.getData(), StandardCharsets.UTF_8);
+        return new String(this.result.getData(), StandardCharsets.UTF_8);
     }
 
     @Override
