@@ -21,7 +21,7 @@ public class PVSSEngine implements Engine {
     }
 
     public String getEngine() {
-        return engine.toString();
+        return this.engine.toString();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class PVSSEngine implements Engine {
             this.sharestoCombine.addShare(splitedShare);
         }
 
-        return engine.combine(this.sharestoCombine);
+        return this.engine.combine(this.sharestoCombine);
     }
 
     @Override
