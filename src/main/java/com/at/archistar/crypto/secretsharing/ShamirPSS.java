@@ -55,7 +55,7 @@ public class ShamirPSS extends GeometricSecretSharing {
 
     @Override
     protected ShamirShare[] createShares(int[] xValues, byte[][] results, int originalLength) throws InvalidParametersException {
-        ShamirShare shares[] = new ShamirShare[n];
+        ShamirShare[] shares = new ShamirShare[n];
 
         for (int i = 0; i < n; i++) {
             shares[i] = new ShamirShare((byte) xValues[i], results[i]);

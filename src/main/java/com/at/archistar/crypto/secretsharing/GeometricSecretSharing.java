@@ -7,6 +7,8 @@ import com.at.archistar.crypto.decode.DecoderFactory;
 import com.at.archistar.crypto.decode.UnsolvableException;
 import com.at.archistar.crypto.math.gf256.GF256;
 
+import java.util.Arrays;
+
 /**
  * <p>this contains basic functionality utilized by RabinIDS and ShamirPSS.</p>
  *
@@ -85,6 +87,7 @@ public abstract class GeometricSecretSharing extends BaseSecretSharing {
         if (data == null) {
             data = new byte[0];
         }
+
         try {
             byte[][] output = new byte[n][encodedSizeFor(data.length)];
             share(output, data);
@@ -122,9 +125,9 @@ public abstract class GeometricSecretSharing extends BaseSecretSharing {
      */
     public byte[] reconstruct(byte[][] input, int[] xValues, int originalLength) throws ReconstructionException {
         Decoder decoder = decoderFactory.createDecoder(xValues, k);
-        byte result[] = new byte[originalLength];
-        int yValues[] = new int[k];
-        int resultMatrix[] = new int[k];
+        byte[] result = new byte[originalLength];
+        int[] yValues = new int[k];
+        int[] resultMatrix = new int[k];
 
         int posResult = 0;
         int posInput = 0;
@@ -168,7 +171,7 @@ public abstract class GeometricSecretSharing extends BaseSecretSharing {
         }
 
         // we only need k x-values for reconstruction
-        int xTmpValues[] = extractXVals(shares, k);
+        int[] xTmpValues = extractXVals(shares, k);
 
         byte[][] tmp = new byte[shares.length][];
         for(int i = 0; i < shares.length; i++) {

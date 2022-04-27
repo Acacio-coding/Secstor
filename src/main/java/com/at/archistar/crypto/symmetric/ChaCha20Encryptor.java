@@ -18,7 +18,7 @@ import java.security.Security;
  */
 public class ChaCha20Encryptor implements Encryptor {
 
-    private final byte randomIvBytes[] = {0, 1, 2, 3, 4, 5, 6, 7};
+    private final byte[] randomIvBytes = {0, 1, 2, 3, 4, 5, 6, 7};
 
     static {
         Security.addProvider(new BouncyCastleProvider());

@@ -55,7 +55,7 @@ public class ErasureDecoder implements Decoder {
 
 
         if (k > matrix.getNumRows()) {
-            throw new UnsolvableException("Seems to be a Configuraiton error");
+            throw new UnsolvableException("Seems to be a Configuration error");
         }
 
         return matrix.rightMultiply(y);

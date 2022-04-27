@@ -9,8 +9,6 @@ import com.at.archistar.crypto.random.RandomSource;
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.at.archistar.crypto.secretsharing.ShamirPSS;
 import com.at.archistar.crypto.secretsharing.WeakSecurityException;
-import com.at.archistar.crypto.data.ReconstructionResult;
-import com.at.archistar.crypto.data.Share;
 
 import java.util.Collections;
 
