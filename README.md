@@ -6,6 +6,7 @@ O objetivo é desenvolver uma biblioteca ou uma api para a utilização de algor
 
 - JDK 17 ou superior
 - JRE 1.8.0 ou superior
+- MySQL 8.0.27 ou superior
 - Lombok Annotations Support for VS Code (extensão para o <b>Visual Studio Code</b>)
 
 ## Para utilizar o projeto
