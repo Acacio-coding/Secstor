@@ -97,7 +97,8 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         var user = this.userRepository.findByRoleAndUsername(Role.CLIENT, username);
 
         if (user == null)
-            throw new ValidationException(HttpStatus.NOT_FOUND, "User not found with provided username", "/api/v1/user/" + username);
+            throw new ValidationException(HttpStatus.NOT_FOUND,
+                    "User not found with provided username", "/api/v1/user/" + username);
 
         user.setPassword("Hashed");
 

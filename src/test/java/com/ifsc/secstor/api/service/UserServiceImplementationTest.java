@@ -80,16 +80,59 @@ class UserServiceImplementationTest {
     }
 
     @Test
-    void findUserByUsername() {
+    void findUserByUsername_RegisteredUsername_UserModel() {
+        //given
+        String username = "admin";
+
+        given(this.userRepository.findByRoleAndUsername(Role.CLIENT, username)).willReturn(
+                new UserModel(1L, "admin", "admin", Role.ADMINISTRATOR));
+
+        //when
+        var result = this.userService.findUserByUsername(username);
+
+        //then
+        assertThat(result).isExactlyInstanceOf(UserModel.class);
     }
 
     @Test
-    void saveUser_ValidUserDTO_UserModel() {
+    void findUserByUsername_NotRegisteredUsername_ValidationException() {
+        //given
+        String username = "admin";
+
+        //then
+        assertThatThrownBy(() -> this.userService.findUserByUsername(username))
+                .isExactlyInstanceOf(ValidationException.class)
+                .hasMessageContaining("User not found with provided username",
+                        "/api/v1/user/" + username);
+
+        verify(this.userRepository, never()).findByUsername(any());
+    }
+
+    @Test
+    void saveUser_ValidUserDTOAdminRole_UserModel() {
         //given
         var admin = new UserDTO("admin", "admin", "ADMINISTRATOR");
 
         //when
         this.userService.saveUser(admin);
+
+        //then
+        ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
+
+        verify(this.userRepository).save(userModelArgumentCaptor.capture());
+
+        var capturedUser = userModelArgumentCaptor.getValue();
+
+        assertThat(capturedUser).isExactlyInstanceOf(UserModel.class);
+    }
+
+    @Test
+    void saveUser_ValidUserDTOClientRole_UserModel() {
+        //given
+        var client = new UserDTO("client", "client", "CLIENT");
+
+        //when
+        this.userService.saveUser(client);
 
         //then
         ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
@@ -131,7 +174,25 @@ class UserServiceImplementationTest {
     }
 
     @Test
-    void updateUser() {
+    void updateUser_RegisteredUser() {
+        //given
+        var adminDto = new UserDTO("newAdmin", "admin", "ADMINISTRATOR");
+        var username = "admin";
+
+        given(this.userRepository.findByUsername(username)).willReturn(
+                new UserModel(1L, "admin", "admin", Role.ADMINISTRATOR));
+
+        //when
+        this.userService.updateUser(username, adminDto);
+
+        //then
+        ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
+
+        verify(this.userRepository).save(userModelArgumentCaptor.capture());
+
+        var capturedUser = userModelArgumentCaptor.getValue();
+
+        assertThat(capturedUser).isExactlyInstanceOf(UserModel.class);
     }
 
     @Test
