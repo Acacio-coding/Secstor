@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,12 +40,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setFilterProcessesUrl("/api/v1/login");
 
         http.csrf().disable();
+
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/v1/login/**", "/api/v1/token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers(
+                "/api/v1/login/**",
+                "/api/v1/token/refresh/**",
+                "/api/v1/user/save/**",
+                "/v1/register/**").permitAll();
 
-        http.authorizeRequests()
-                .antMatchers(POST, "/api/v1/secret-sharing/split/**", "/api/v1/secret-sharing/reconstruct/**", "/api/v1/data-anonymization/anonymize")
+        http.requestMatchers((matchers) -> matchers.antMatchers("/static/**"))
+                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
+                .requestCache().disable()
+                .securityContext().disable()
+                .sessionManagement().disable();
+
+        http.authorizeRequests().antMatchers(POST, "/api/v1/secret-sharing/split/**",
+                        "/api/v1/secret-sharing/reconstruct/**",
+                        "/api/v1/data-anonymization/anonymize")
                 .hasAnyAuthority(Role.ADMINISTRATOR.name(), Role.CLIENT.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
@@ -57,23 +70,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
-        http.authorizeRequests().antMatchers(POST, "/api/v1/user/save/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
-                .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
-                .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
-
-        http.authorizeRequests().antMatchers(POST, "/api/v1/role/save/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
-                .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
-                .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
-
         http.authorizeRequests().antMatchers(PUT, "/api/v1/user/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
         http.authorizeRequests().antMatchers(DELETE, "/user/v1/user/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
-                .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
-                .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
-
-        http.authorizeRequests().antMatchers(DELETE, "/user/v1/role/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 

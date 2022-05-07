@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -23,4 +24,6 @@ public interface UserService {
     void deleteUser(String username);
 
     Map<String, String> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
+
+    List<String> findAllUsernames();
 }

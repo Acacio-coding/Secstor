@@ -20,13 +20,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.org.deidentifier.arx.AttributeType.Hierarchy;
-
 import com.carrotsearch.hppc.CharOpenHashSet;
+import com.org.deidentifier.arx.AttributeType.Hierarchy;
 
 /**
  * This class enables building hierarchies for categorical and non-categorical values
@@ -37,7 +35,7 @@ import com.carrotsearch.hppc.CharOpenHashSet;
  * @author Fabian Prasser
  * @param <T>
  */
-public class HierarchyBuilderRedactionBased<T> extends HierarchyBuilder<T> implements Serializable { // NO_UCD
+public class HierarchyBuilderRedactionBased<T> extends HierarchyBuilder<T> { // NO_UCD
 
     /**
      * Order

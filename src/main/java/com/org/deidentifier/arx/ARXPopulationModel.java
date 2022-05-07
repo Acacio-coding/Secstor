@@ -26,7 +26,7 @@ import java.io.Serializable;
 public class ARXPopulationModel implements Serializable {
 
     /** Regions*/
-    public static enum Region implements Serializable{
+    public static enum Region {
 
         NONE("None", 0l),
         AFRICA("Africa", 1100000000l),

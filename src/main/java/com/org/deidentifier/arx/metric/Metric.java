@@ -77,7 +77,7 @@ public abstract class Metric<T extends InformationLoss<?>> implements Serializab
      *
      * @author Fabian Prasser
      */
-    public static enum AggregateFunction implements Serializable{
+    public static enum AggregateFunction {
         
         /** Sum */
         SUM("Sum"),

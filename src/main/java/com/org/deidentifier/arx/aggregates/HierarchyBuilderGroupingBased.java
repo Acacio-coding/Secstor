@@ -36,7 +36,7 @@ import com.org.deidentifier.arx.DataType;
  * @author Fabian Prasser
  * @param <T>
  */
-public abstract class HierarchyBuilderGroupingBased<T> extends HierarchyBuilder<T> implements Serializable {
+public abstract class HierarchyBuilderGroupingBased<T> extends HierarchyBuilder<T> {
 
     /**
      * This class represents a fanout parameter.

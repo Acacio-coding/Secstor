@@ -40,6 +40,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             } else {
                 filterChain.doFilter(request, response);
             }
+        } else if (request.getServletPath().equals("/v1/register") || request.getServletPath().equals("/api/v1/user/save")) {
+            filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
 

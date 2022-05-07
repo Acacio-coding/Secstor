@@ -16,15 +16,13 @@
  */
 package com.org.deidentifier.arx.aggregates;
 
-import java.io.Serializable;
-
 import com.org.deidentifier.arx.ARXClassificationConfiguration;
 
 /**
  * Configuration for logistic regression
  * @author Fabian Prasser
  */
-public class ClassificationConfigurationLogisticRegression extends ARXClassificationConfiguration<ClassificationConfigurationLogisticRegression> implements Serializable, Cloneable {
+public class ClassificationConfigurationLogisticRegression extends ARXClassificationConfiguration<ClassificationConfigurationLogisticRegression> {
 
     /** 
      * Prior function for regularization

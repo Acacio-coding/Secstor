@@ -17,8 +17,6 @@
 
 package com.org.deidentifier.arx.risk;
 
-import java.io.Serializable;
-
 import com.org.deidentifier.arx.ARXPopulationModel;
 import com.org.deidentifier.arx.ARXSolverConfiguration;
 import com.org.deidentifier.arx.common.WrappedBoolean;
@@ -37,7 +35,7 @@ public class RiskModelPopulationUniqueness extends RiskModelPopulation {
      * 
      * @author Fabian Prasser
      */
-    public static enum PopulationUniquenessModel implements Serializable {
+    public static enum PopulationUniquenessModel {
         PITMAN,
         ZAYATZ,
         SNB,

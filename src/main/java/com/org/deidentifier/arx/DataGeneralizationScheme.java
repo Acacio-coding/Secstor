@@ -34,7 +34,7 @@ public class DataGeneralizationScheme implements Serializable, Cloneable { // NO
      * @author Fabian Prasser
      *
      */
-    public static enum GeneralizationDegree implements Serializable {
+    public static enum GeneralizationDegree {
         
         NONE(0d),
         LOW(0.2d),

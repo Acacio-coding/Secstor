@@ -3,8 +3,6 @@ package com.at.archistar.crypto;
 import com.at.archistar.crypto.data.ReconstructionResult;
 import com.at.archistar.crypto.data.Share;
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
-import com.at.archistar.crypto.data.ReconstructionResult;
-import com.at.archistar.crypto.data.Share;
 
 /**
  * <p>This is the preferred interface for users of archistar-smc. Its implementations

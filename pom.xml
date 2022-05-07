@@ -15,6 +15,8 @@
 	<description>Rest API para a aplicação de algoritmos de compartilhamento de segredo e anonimização de dados para a adequação de sistemas à LGPD</description>
 	<properties>
 		<java.version>17</java.version>
+		<node.version>v16.10.0</node.version>
+		<npm.version>v7.24.0</npm.version>
 	</properties>
 
 	<repositories>
@@ -242,18 +244,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-			<exclusions>
-				<exclusion>
-					<groupId>*</groupId>
-					<artifactId>*</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.mahout</groupId>
 			<artifactId>mahout-core</artifactId>
 			<version>0.9</version>
@@ -396,6 +386,11 @@
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 	</dependencies>
 	

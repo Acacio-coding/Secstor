@@ -16,15 +16,13 @@
  */
 package com.org.deidentifier.arx.aggregates;
 
-import java.io.Serializable;
-
 import com.org.deidentifier.arx.ARXClassificationConfiguration;
 
 /**
  * Configuration for naive bayes classification
  * @author Fabian Prasser
  */
-public class ClassificationConfigurationNaiveBayes extends ARXClassificationConfiguration<ClassificationConfigurationNaiveBayes> implements Serializable, Cloneable {
+public class ClassificationConfigurationNaiveBayes extends ARXClassificationConfiguration<ClassificationConfigurationNaiveBayes> {
 
     /** 
      * Type of bayes classifier

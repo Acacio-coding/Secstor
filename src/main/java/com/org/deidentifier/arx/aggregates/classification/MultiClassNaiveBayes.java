@@ -16,6 +16,10 @@
  */
 package com.org.deidentifier.arx.aggregates.classification;
 
+import com.org.deidentifier.arx.DataHandleInternal;
+import com.org.deidentifier.arx.aggregates.ClassificationConfigurationNaiveBayes;
+import com.org.deidentifier.arx.common.WrappedBoolean;
+
 import org.apache.mahout.math.Matrix;
 import org.apache.mahout.math.OrderedIntDoubleMapping;
 import org.apache.mahout.math.Vector;
@@ -23,10 +27,6 @@ import org.apache.mahout.math.function.DoubleDoubleFunction;
 import org.apache.mahout.math.function.DoubleFunction;
 import org.apache.mahout.vectorizer.encoders.ConstantValueEncoder;
 import org.apache.mahout.vectorizer.encoders.StaticWordValueEncoder;
-import com.org.deidentifier.arx.DataHandleInternal;
-import com.org.deidentifier.arx.aggregates.ClassificationConfigurationNaiveBayes;
-import com.org.deidentifier.arx.aggregates.ClassificationConfigurationNaiveBayes.Type;
-import com.org.deidentifier.arx.common.WrappedBoolean;
 
 //import smile.classification.NaiveBayes;
 //import smile.classification.NaiveBayes.Model;

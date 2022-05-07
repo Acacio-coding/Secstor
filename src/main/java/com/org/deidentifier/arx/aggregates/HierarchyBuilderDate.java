@@ -44,7 +44,7 @@ import com.org.deidentifier.arx.DataType.ARXDate;
  *
  * @author Fabian Prasser
  */
-public class HierarchyBuilderDate extends HierarchyBuilder<Date> implements Serializable { // NO_UCD
+public class HierarchyBuilderDate extends HierarchyBuilder<Date> { // NO_UCD
 
     /**
      * A format-class for localization

@@ -55,7 +55,7 @@ public class AttributeType implements Serializable, Cloneable { // NO_UCD
      * @author Fabian Prasser
      * @author Florian Kohlmayer
      */
-    public static abstract class Hierarchy extends AttributeType implements Serializable { // NO_UCD
+    public static abstract class Hierarchy extends AttributeType { // NO_UCD
 
         /**
          * The default implementation of a generalization hierarchy. It allows
@@ -644,7 +644,7 @@ public class AttributeType implements Serializable, Cloneable { // NO_UCD
      * @param <T>
      *
      */
-    public static class MicroAggregationFunction extends AttributeType implements Serializable {
+    public static class MicroAggregationFunction extends AttributeType {
 
         /** SVUID */
         private static final long            serialVersionUID = -7175337291872533713L;

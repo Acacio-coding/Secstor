@@ -16,15 +16,13 @@
  */
 package com.org.deidentifier.arx.aggregates;
 
-import java.io.Serializable;
-
 import com.org.deidentifier.arx.ARXClassificationConfiguration;
 
 /**
  * Configuration for Random Forest classifiers
  * @author Fabian Prasser
  */
-public class ClassificationConfigurationRandomForest extends ARXClassificationConfiguration<ClassificationConfigurationRandomForest> implements Serializable, Cloneable {
+public class ClassificationConfigurationRandomForest extends ARXClassificationConfiguration<ClassificationConfigurationRandomForest> {
 
     /**
      * Split rule for the decision tree

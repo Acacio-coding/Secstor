@@ -7,8 +7,6 @@ import com.at.archistar.crypto.decode.DecoderFactory;
 import com.at.archistar.crypto.decode.UnsolvableException;
 import com.at.archistar.crypto.math.gf256.GF256;
 
-import java.util.Arrays;
-
 /**
  * <p>this contains basic functionality utilized by RabinIDS and ShamirPSS.</p>
  *

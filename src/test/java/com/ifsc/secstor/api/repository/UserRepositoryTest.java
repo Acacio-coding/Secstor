@@ -41,6 +41,7 @@ class UserRepositoryTest {
     void setUp() {
         this.userRepository.save(admin);
         this.userRepository.save(client1);
+        this.userRepository.save(client2);
     }
 
     @AfterEach
