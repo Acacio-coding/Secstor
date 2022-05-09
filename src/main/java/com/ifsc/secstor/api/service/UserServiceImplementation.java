@@ -113,29 +113,6 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     @Override
     public void saveUser(UserDTO userDTO) {
-        var regexUsername = "^(?=.{5,20}$)(?![_.-])(?!.*[_.-]{2})[a-z0-9._-]+(?<![_.-])$";
-        var regexPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(){}|_`´~\"',-./:;<>\\[\\]+?\\\\=]).{8,12}$";
-
-        if (userDTO.getUsername().isBlank())
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "Username must be provided", "/api/v1/user/create");
-
-        if (userDTO.getUsername().length() < 5 || userDTO.getUsername().length() > 20)
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "Username must be between 5 and 20 characters", "/api/v1/user/create");
-
-        if (!userDTO.getUsername().matches(regexUsername))
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "Username can only contain lower case letters, numbers, " +
-                    "underscore, dash or dot with no white spaces", "/api/v1/user/create");
-
-        if (userDTO.getPassword().isBlank())
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "Password must be provided!", "/api/v1/user/create");
-
-        if (userDTO.getPassword().length() < 8 || userDTO.getUsername().length() > 12)
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "Password must be between 8 and 12 characters", "/api/v1/user/create");
-
-        if (!userDTO.getPassword().matches(regexPassword))
-            throw new ValidationException(HttpStatus.BAD_REQUEST,"Password must include at least one uppercase and lowercase " +
-                    "letters, a number and a symbol with no white spaces", "/api/v1/user/create");
-
         if (this.userRepository.existsByUsername(userDTO.getUsername()))
             throw new ValidationException(HttpStatus.CONFLICT, "User is already registered", "/api/v1/user/create");
 

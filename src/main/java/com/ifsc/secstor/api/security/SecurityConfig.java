@@ -17,9 +17,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import static org.springframework.http.HttpMethod.*;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import static org.springframework.security.config.http.SessionCreationPolicy.ALWAYS;
 
 @Configuration
 @EnableWebSecurity
@@ -39,21 +40,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManagerBean());
         authenticationFilter.setFilterProcessesUrl("/api/v1/login");
 
-        http.csrf().disable();
+        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringAntMatchers("/api/v1/login/**",
+                        "/api/v1/token/refresh/**",
+                        "/api/v1/user/save/**",
+                        "/api/v1/secret-sharing/split/**",
+                        "/api/v1/secret-sharing/reconstruct/**",
+                        "/api/v1/data-anonymization/anonymize",
+                        "/api/v1/users/**",
+                        "/api/v1/user/**");
 
-        http.sessionManagement().sessionCreationPolicy(STATELESS);
+        http.sessionManagement().sessionCreationPolicy(ALWAYS);
 
-        http.authorizeRequests().antMatchers(
-                "/api/v1/login/**",
-                "/api/v1/token/refresh/**",
-                "/api/v1/user/save/**",
-                "/v1/register/**").permitAll();
-
-        http.requestMatchers((matchers) -> matchers.antMatchers("/static/**"))
-                .authorizeHttpRequests((authorize) -> authorize.anyRequest().permitAll())
-                .requestCache().disable()
-                .securityContext().disable()
-                .sessionManagement().disable();
+        http.authorizeRequests()
+                .antMatchers("/v1/register/**", "/api/v1/login/**", "/api/v1/token/refresh/**", "/api/v1/user/save/**")
+                .permitAll();
 
         http.authorizeRequests().antMatchers(POST, "/api/v1/secret-sharing/split/**",
                         "/api/v1/secret-sharing/reconstruct/**",
@@ -81,6 +82,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilter(authenticationFilter);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/static/**")
+                .antMatchers("/css/**")
+                .antMatchers("/js/**")
+                .antMatchers("/img/**");
     }
 
     @Bean

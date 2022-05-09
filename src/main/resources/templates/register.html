@@ -5,13 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Register</title>
 
+        <link rel="shortcut icon" th:href="@{/img/favicon.png}" type="image/x-icon">
+
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
               rel="stylesheet"
               integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
               crossorigin="anonymous">
 
+        <!-- Reset CSS -->
         <link th:href="@{/css/reset.css}" rel="stylesheet">
+
+        <!-- Register page CSS -->
         <link th:href="@{/css/register.css}" rel="stylesheet">
     </head>
     <body>
@@ -28,21 +33,22 @@
                     </div>
 
                     <div class="content">
-                        <form class="w-100" id="registerInfo" novalidate action="#" th:action="@{/v1/register}" th:object="${user}" method="POST">
+                        <form class="w-100" id="registerInfo" novalidate th:action="@{/v1/register}" th:object="${user}" method="POST">
                             <div class="mb-3 w-100">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control w-100" name="username" id="username" autocomplete="off" th:data="${usernames}"
-                                       onclick="clearInputErrors(this)" onblur="validateInputInfo(this, this.getAttribute('data'))">
+                                       onclick="clearInputErrors(this)" onblur="validateUsernameInputInfo(this, this.getAttribute('data'))">
                             </div>
 
                             <div class="mb-3 w-100">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control w-100" name="password" id="password" autocomplete="off"
-                                       onclick="clearInputErrors(this)" onblur="validateInputInfo(this)">
+                                       onclick="clearInputErrors(this)" onblur="validatePasswordInputInfo(this)">
                             </div>
 
                             <div class="w-100 pt-4 d-flex justify-content-center">
-                                <button id="formButton" type="button" onclick="sendInfo()" class="btn w-100">Submit</button>
+                                <button id="formButton" type="button" class="btn w-100" th:data="${usernames}"
+                                        onclick="sendInfo(this.getAttribute('data'))">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -50,6 +56,7 @@
             </div>
         </div>
 
+        <!-- Validation Script -->
         <script th:src="@{/js/register.js}"></script>
 
         <!--  Bootstrap JS Bundle  -->
