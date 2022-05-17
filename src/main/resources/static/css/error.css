@@ -1,0 +1,8 @@
+.main-column {
+    padding-top: 10vh;
+}
+
+.message {
+    font-size: clamp(1em, 10vw, 2em);
+    color: rgb(239,68,68);
+}

@@ -46,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/user/save/**",
                         "/api/v1/secret-sharing/split/**",
                         "/api/v1/secret-sharing/reconstruct/**",
-                        "/api/v1/data-anonymization/anonymize",
                         "/api/v1/users/**",
                         "/api/v1/user/**");
 
@@ -57,8 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         http.authorizeRequests().antMatchers(POST, "/api/v1/secret-sharing/split/**",
-                        "/api/v1/secret-sharing/reconstruct/**",
-                        "/api/v1/data-anonymization/anonymize")
+                        "/api/v1/secret-sharing/reconstruct/**")
                 .hasAnyAuthority(Role.ADMINISTRATOR.name(), Role.CLIENT.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
@@ -85,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring()
                 .antMatchers("/static/**")
                 .antMatchers("/css/**")

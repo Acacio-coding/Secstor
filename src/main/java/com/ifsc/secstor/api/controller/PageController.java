@@ -33,13 +33,14 @@ public class PageController {
     }
 
     @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") @Validated FormDTO user) {
+    public String submitForm(@ModelAttribute("user") @Validated FormDTO user, Model model) {
         UserDTO toSave = new UserDTO(user.getUsername(), user.getPassword(), "CLIENT");
 
         try {
             userService.saveUser(toSave);
             return "success";
         } catch (Exception exception) {
+            model.addAttribute("error", exception.getMessage());
             return "error";
         }
     }
