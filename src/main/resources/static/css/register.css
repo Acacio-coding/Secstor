@@ -4,14 +4,6 @@ h1 {
     color: hsl(0, 0%, 100%);
 }
 
-.brand {
-    margin-bottom: 4em;
-}
-
-.brand h1 {
-    font-size: clamp(3em, 10vw, 4.5em);
-}
-
 .title {
     width: clamp(300px, 100%, 400px);
     padding: 3em 0;
