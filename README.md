@@ -26,11 +26,6 @@ Agora siga os seguintes passos:
 spring.datasource.url=jdbc:mysql://localhost:3306/NOME DO BANCO DE DADOS?createDatabaseIfNotExist=true
 spring.datasource.username=USUÁRIO DO BANCO DE DADOS
 spring.datasource.password=SENHA DO BANCO DE DADOS
-
-secstor.auth-secret=SEGREDO UTILIZADO NA GERAÇÃO DOS TOKENS
-
-secstor.admin-username=USUÁRIO ADMINISTRADOR INICIAL
-secstor.admin-password=SENHA DO USUÁRIO ADMINISTRADOR INICIAL
 ```
 Obs.: o endereço do banco de dados e a porta também podem mudar, mas para a execução em uma máquina local, pode se manter os mesmos utilizados acima.
 
