@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
+import static com.ifsc.secstor.api.advice.paths.Paths.*;
+
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/api/v1/secret-sharing")
+@RequestMapping(SECRET_SHARING_BASE)
 public class SecretSharingController {
 
     private final SecretSharingImplementation secretSharingService;
@@ -26,12 +28,12 @@ public class SecretSharingController {
         this.secretSharingService = new SecretSharingImplementation(10, 5);
     }
 
-    @PostMapping("/split")
+    @PostMapping(SECRET_SHARING_SPLIT)
     public ResponseEntity<Object> split(@RequestBody @Validated SplitDTO splitDTO) throws UnsupportedEncodingException, InvalidVSSScheme {
         return ResponseEntity.status(HttpStatus.OK).body(this.secretSharingService.split(splitDTO));
     }
 
-    @PostMapping("/reconstruct")
+    @PostMapping(SECRET_SHARING_RECONSTRUCT)
     public ResponseEntity<Object> reconstruct(@RequestBody ReconstructDTO reconstructDTO) throws UnsupportedEncodingException,
             InvalidParametersException, InvalidVSSScheme, ReconstructionException {
 

@@ -14,7 +14,7 @@ O objetivo é desenvolver uma biblioteca ou uma api para a utilização de algor
 Utilize o comando abaixo:
 
 ```
-git clone https://github.com/Acacio-coding/Secstor
+git clone -b noauth https://github.com/Acacio-coding/Secstor
 ```
 
 Agora siga os seguintes passos:
@@ -31,3 +31,8 @@ Obs.: o endereço do banco de dados e a porta também podem mudar, mas para a ex
 
 4. A partir da ferramente realize um <i><b>build</b></i> para que os arquivos de código fonte sejam compilados e os arquivos de saída (para execução) sejam gerados;
 5. Execute o projeto a partir da classe que contém o método <i><b>main</b></i>.
+
+## Referências
+T. Loruenser, A. Happe, D. Slamanig: "ARCHISTAR: Towards Secure and Robust Cloud Based Data Sharing"; Vortrag: Cloud Computing Technology and Science (CloudCom), 2015, Vancouver, Canada; 30.11.2015 - 03.12.2015; in: "CloudCom 2015", IEEE, (2016), S. 371 - 378.
+
+Disponível em: <https://github.com/Archistar/archistar-smc>

@@ -19,6 +19,10 @@ import org.springframework.http.HttpStatus;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
+import static com.ifsc.secstor.api.advice.messages.ErrorMessages.*;
+import static com.ifsc.secstor.api.advice.paths.Paths.SECRET_SHARING_BASE_AND_RECONSTRUCT;
+import static com.ifsc.secstor.api.advice.paths.Paths.SECRET_SHARING_BASE_AND_SPLIT;
+
 public class SecretSharingImplementation implements SecretSharingService {
     private final Engine shamir;
     private final Engine pss;
@@ -38,7 +42,7 @@ public class SecretSharingImplementation implements SecretSharingService {
     public Object split(SplitDTO splitDTO) throws UnsupportedEncodingException, InvalidVSSScheme {
         if (splitDTO.getData() == null || splitDTO.getData() == "")
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "Data must be provided", "/api/v1/secret-sharing/split");
+                    NULL_DATA, SECRET_SHARING_BASE_AND_SPLIT);
 
         Object data;
 
@@ -47,7 +51,7 @@ public class SecretSharingImplementation implements SecretSharingService {
             data = baseObject.get("data");
         } catch (Exception exception) {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "Data provided is invalid, it must be an object", "/api/v1/secret-sharing/split");
+                    INVALID_DATA, SECRET_SHARING_BASE_AND_SPLIT);
         }
 
         if (splitDTO.getAlgorithm().equalsIgnoreCase("shamir"))
@@ -66,8 +70,7 @@ public class SecretSharingImplementation implements SecretSharingService {
             return this.pvss.split(data.toString());
 
         throw new ValidationException(HttpStatus.BAD_REQUEST,
-                "Algorithm provided is invalid, it must be either SHAMIR, PSS, CSS, KRAWCZYK or PVSS",
-                "/api/v1/secret-sharing/split");
+                INVALID_ALGORITHM, SECRET_SHARING_BASE_AND_SPLIT);
     }
 
     @Override
@@ -75,8 +78,8 @@ public class SecretSharingImplementation implements SecretSharingService {
             InvalidParametersException, InvalidVSSScheme, ReconstructionException {
 
         if (reconstructDTO.getSecret() == null || reconstructDTO.getSecret() == "")
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "Secret must be provided",
-                    "/api/v1/secret-sharing/reconstruct");
+            throw new ValidationException(HttpStatus.BAD_REQUEST, NULL_SECRET,
+                    SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
         JSONObject baseObject;
         JSONObject secret;
@@ -86,8 +89,7 @@ public class SecretSharingImplementation implements SecretSharingService {
             secret = (JSONObject) baseObject.get("secret");
         } catch (Exception exception) {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "Secret provided is invalid, it must be an object",
-                    "/api/v1/secret-sharing/reconstruct");
+                    INVALID_SECRET, SECRET_SHARING_BASE_AND_RECONSTRUCT);
         }
 
         if (secret.has("macKeys"))
@@ -102,7 +104,6 @@ public class SecretSharingImplementation implements SecretSharingService {
             return this.shamir.reconstruct(secret);
 
         throw new ValidationException(HttpStatus.BAD_REQUEST,
-                "Secret provided doesn't match any of share algorithm types",
-                "/api/v1/secret-sharing/reconstruct");
+                NO_MATCH_SECRET, SECRET_SHARING_BASE_AND_RECONSTRUCT);
     }
 }
