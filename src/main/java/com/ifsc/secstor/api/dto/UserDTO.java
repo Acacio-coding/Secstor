@@ -6,6 +6,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import static com.ifsc.secstor.api.advice.messages.ErrorMessages.*;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,18 +15,18 @@ import javax.validation.constraints.Size;
 @Data
 public class UserDTO {
 
-    @NotBlank(message = "Username must be provided")
-    @Size(min = 5, max = 20, message = "Username must be between 5 and 20 characters")
+    @NotBlank(message = NULL_USERNAME)
+    @Size(min = 5, max = 20, message = INVALID_USERNAME_LENGTH)
     @Pattern(regexp = "^(?=.{5,20}$)(?![_.-])(?!.*[_.-]{2})[a-z0-9._-]+(?<![_.-])$",
-            message = "Username can only contain lower case letters, numbers, underscore, dash or dot with no white spaces")
+            message = INVALID_USERNAME)
     private String username;
 
-    @NotBlank(message = "Password must be provided")
-    @Size(min = 8, max = 12, message = "Password must be between 8 and 12 characters")
+    @NotBlank(message = NULL_PASSWORD)
+    @Size(min = 8, max = 12, message = INVALID_PASSWORD_LENGTH)
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(){}|_`´~\"',-./:;<>\\[\\]+?\\\\=]).{8,12}$",
-            message = "Password must include at least one uppercase and lowercase letters, a number and a symbol with no white spaces")
+            message = INVALID_PASSWORD)
     private String password;
 
-    @NotBlank(message = "Role must be provided")
+    @NotBlank(message = NULL_ROLE)
     private String role;
 }

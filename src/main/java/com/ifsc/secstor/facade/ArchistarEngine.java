@@ -1,6 +1,6 @@
 package com.ifsc.secstor.facade;
 
-import com.at.archistar.crypto.*;
+import com.at.archistar.crypto.CryptoEngine;
 import com.at.archistar.crypto.data.*;
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.ifsc.secstor.api.advice.exception.ValidationException;
@@ -15,7 +15,12 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.ifsc.secstor.api.advice.messages.ErrorMessages.*;
+import static com.ifsc.secstor.api.advice.paths.Paths.SECRET_SHARING_BASE_AND_RECONSTRUCT;
 
 @RequiredArgsConstructor
 public class ArchistarEngine implements Engine {
@@ -87,13 +92,11 @@ public class ArchistarEngine implements Engine {
 
         if (auxShares.isEmpty())
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "No secret provided to be reconstructed",
-                    "/api/v1/secret-sharing/reconstruct");
+                    NULL_SECRET, SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
         if (auxShares.length() < 5)
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "Not enough shares to reconstruct the secret, it must be at least 5",
-                    "/api/v1/secret-sharing/reconstruct");
+                    NOT_ENOUGH_SHARES, SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
         Share[] shares = new Share[auxShares.length()];
 
@@ -110,15 +113,13 @@ public class ArchistarEngine implements Engine {
 
             if (allMacKeys.isEmpty())
                 throw new ValidationException(HttpStatus.BAD_REQUEST,
-                        "There was a missing parameter: MACKEYS",
-                        "/api/v1/secret-sharing/reconstruct");
+                        MISSING_MAC_KEYS, SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
             JSONArray allMacs = (JSONArray) secret.get("macs");
 
             if (allMacs.isEmpty())
                 throw new ValidationException(HttpStatus.BAD_REQUEST,
-                        "There was a missing parameter: MACS",
-                        "/api/v1/secret-sharing/reconstruct");
+                        MISSING_MACS, SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
             int k = 1;
             for (int i = 0; i < auxShares.length(); i++) {
@@ -144,8 +145,7 @@ public class ArchistarEngine implements Engine {
 
             if (jsonFingerPrints.isEmpty())
                 throw new ValidationException(HttpStatus.BAD_REQUEST,
-                        "There was a missing parameter: FINGERPRINTS",
-                        "/api/v1/secret-sharing/reconstruct");
+                        MISSING_FINGERPRINTS, SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
             JSONArray encKeys = (JSONArray) secret.get("encKeys");
             Integer encAlgorithm = (Integer) secret.get("encAlgorithm");
@@ -191,18 +191,15 @@ public class ArchistarEngine implements Engine {
     private void validateInfo(JSONArray encKeys, Integer encAlgorithm, Integer originalLength) {
         if (encKeys.isEmpty())
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "There was a missing parameter: ENCKEYS",
-                    "/api/v1/secret-sharing/reconstruct");
+                    MISSING_ENCKEYS, SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
         if (encAlgorithm == null)
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "There was a missing parameter: ENCALGORITHM",
-                    "/api/v1/secret-sharing/reconstruct");
+                    MISSING_ENCALGORITHM, SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
         if (originalLength == null)
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "There was a missing parameter: ORIGINALLENGTH",
-                    "/api/v1/secret-sharing/reconstruct");
+                    MISSING_ORIGINALLENGTH, SECRET_SHARING_BASE_AND_RECONSTRUCT);
     }
 }
 

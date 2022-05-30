@@ -17,6 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.ifsc.secstor.api.util.Constants.*;
+
 public class JWTUtils {
     private final Algorithm algorithm;
 
@@ -34,7 +36,7 @@ public class JWTUtils {
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
-                .withClaim("role", user.getAuthorities()
+                .withClaim(ROLE, user.getAuthorities()
                         .stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
@@ -47,8 +49,8 @@ public class JWTUtils {
                 .sign(this.algorithm);
 
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", accessToken);
-        tokens.put("refresh_token", refreshToken);
+        tokens.put(ACCESS_TOKEN, accessToken);
+        tokens.put(REFRESH_TOKEN, refreshToken);
 
         return tokens;
     }
@@ -65,15 +67,15 @@ public class JWTUtils {
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
-                .withClaim("role", role
+                .withClaim(ROLE, role
                         .stream()
                         .map(GrantedAuthority::getAuthority)
                         .collect(Collectors.toList()))
                 .sign(this.algorithm);
 
         Map<String, String> token = new HashMap<>();
-        token.put("access_token", accessToken);
-        token.put("refresh_token", refreshToken);
+        token.put(ACCESS_TOKEN, accessToken);
+        token.put(REFRESH_TOKEN, refreshToken);
         return token;
     }
 
@@ -89,7 +91,7 @@ public class JWTUtils {
         DecodedJWT decodedJWT = verifier.verify(token);
 
         String username = decodedJWT.getSubject();
-        String[] roles = decodedJWT.getClaim("role").asArray(String.class);
+        String[] roles = decodedJWT.getClaim(ROLE).asArray(String.class);
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(roles[0]));

@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.ifsc.secstor.api.advice.messages.ErrorMessages.AUTHENTICATION_ERROR;
+import static com.ifsc.secstor.api.advice.messages.ErrorMessages.USER_NOT_FOUND;
+import static com.ifsc.secstor.api.util.Constants.PASSWORD;
+import static com.ifsc.secstor.api.util.Constants.USERNAME;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -26,17 +30,20 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException {
+        String username = request.getParameter(USERNAME);
+        String password = request.getParameter(PASSWORD);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(username, password);
 
         return this.authenticationManager.authenticate(authenticationToken);
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                            FilterChain chain, Authentication authentication) throws IOException {
         User user = (User) authentication.getPrincipal();
         JWTUtils algorithmUtils = new JWTUtils();
 
@@ -45,10 +52,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException {
         response.setStatus(UNAUTHORIZED.value());
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getWriter(),
-                new ErrorModel(UNAUTHORIZED.value(), "Authentication Error", "User not found with provided credentials", request.getServletPath()));
+                new ErrorModel(UNAUTHORIZED.value(), AUTHENTICATION_ERROR, USER_NOT_FOUND, request.getServletPath()));
     }
 }

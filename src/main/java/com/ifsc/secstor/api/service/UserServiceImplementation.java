@@ -29,6 +29,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static com.ifsc.secstor.api.advice.messages.ErrorMessages.*;
+import static com.ifsc.secstor.api.advice.paths.Paths.*;
+import static com.ifsc.secstor.api.util.Constants.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
@@ -45,7 +48,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         var user = this.userRepository.findByUsername(username);
 
         if (user == null)
-            throw new ValidationException(HttpStatus.NOT_FOUND, "User not found with provided credentials", "/api/v1/login");
+            throw new ValidationException(HttpStatus.NOT_FOUND, USER_NOT_FOUND, LOGIN_ROUTE);
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
@@ -60,12 +63,12 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         if (authorizationHeader == null || authorizationHeader.isBlank()) {
             response.setStatus(FORBIDDEN.value());
             new ObjectMapper().writeValue(response.getWriter(),
-                    new ErrorModel(FORBIDDEN.value(), "Authorization Error", "Authorization header is missing", request.getServletPath()));
-        } else if (authorizationHeader.startsWith("Bearer ")) {
+                    new ErrorModel(FORBIDDEN.value(), AUTH_ERROR, NULL_AUTH_HEADER, request.getServletPath()));
+        } else if (authorizationHeader.startsWith(TOKEN_BEARER)) {
             try {
                 JWTUtils jwtUtils = new JWTUtils();
 
-                String refreshToken = authorizationHeader.substring("Bearer ".length());
+                String refreshToken = authorizationHeader.substring(TOKEN_BEARER.length());
                 String username = jwtUtils.getTokenUsername(refreshToken);
 
                 var user = this.userRepository.findByUsername(username);
@@ -74,11 +77,11 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
             } catch (Exception exception) {
                 response.setStatus(FORBIDDEN.value());
                 new ObjectMapper().writeValue(response.getOutputStream(),
-                        new ErrorModel(FORBIDDEN.value(), "Authorization Error", exception.getMessage(), request.getServletPath()));
+                        new ErrorModel(FORBIDDEN.value(), AUTH_ERROR, exception.getMessage(), request.getServletPath()));
             }
         }
 
-        throw new ValidationException(HttpStatus.BAD_REQUEST, "Authorization header is invalid", request.getServletPath());
+        throw new ValidationException(HttpStatus.BAD_REQUEST, INVALID_AUTH_HEADER, request.getServletPath());
     }
 
     @Override
@@ -93,7 +96,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         if (toReturn == null)
             return null;
 
-        toReturn.forEach(model -> model.setPassword("Hashed"));
+        toReturn.forEach(model -> model.setPassword(HASHED_PASSWORD));
 
         return toReturn;
     }
@@ -104,9 +107,9 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
         if (user == null)
             throw new ValidationException(HttpStatus.NOT_FOUND,
-                    "User not found with provided username", "/api/v1/user/" + username);
+                    USER_NOT_FOUND, USER_PATH + username);
 
-        user.setPassword("Hashed");
+        user.setPassword(HASHED_PASSWORD);
 
         return user;
     }
@@ -114,17 +117,16 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public void saveUser(UserDTO userDTO) {
         if (this.userRepository.existsByUsername(userDTO.getUsername()))
-            throw new ValidationException(HttpStatus.CONFLICT, "User is already registered", "/api/v1/user/create");
+            throw new ValidationException(HttpStatus.CONFLICT, USER_ALREADY_REGISTERED, SAVE_USER_PATH);
 
         var user = new UserModel();
 
-        if (userDTO.getRole().equalsIgnoreCase("CLIENT"))
+        if (userDTO.getRole().equalsIgnoreCase(CLIENT))
             user.setRole(Role.CLIENT);
-        else if (userDTO.getRole().equalsIgnoreCase("ADMINISTRATOR"))
+        else if (userDTO.getRole().equalsIgnoreCase(ADMINISTRATOR))
             user.setRole(Role.ADMINISTRATOR);
         else
-            throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "Role provided is invalid, it must be either CLIENT or ADMINISTRATOR", "/api/v1/user/create");
+            throw new ValidationException(HttpStatus.BAD_REQUEST, INVALID_ROLE, SAVE_USER_PATH);
 
         BeanUtils.copyProperties(userDTO, user);
 
@@ -138,15 +140,15 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         var user = this.userRepository.findByUsername(username);
 
         if (user == null)
-            throw new ValidationException(HttpStatus.NOT_FOUND, "User not found with provided username", "/api/v1/user/" + username);
+            throw new ValidationException(HttpStatus.NOT_FOUND, USER_NOT_FOUND, USER_PATH + username);
 
-        if (userDTO.getRole().equalsIgnoreCase("CLIENT"))
+        if (userDTO.getRole().equalsIgnoreCase(CLIENT))
             user.setRole(Role.CLIENT);
-        else if (userDTO.getRole().equalsIgnoreCase("ADMINISTRATOR"))
+        else if (userDTO.getRole().equalsIgnoreCase(ADMINISTRATOR))
             user.setRole(Role.ADMINISTRATOR);
         else
             throw new ValidationException(HttpStatus.BAD_REQUEST,
-                    "Role provided is invalid, it must be either CLIENT or ADMINISTRATOR", "/api/v1/" + username);
+                    INVALID_ROLE, USER_PATH + username);
 
         user.setUsername(userDTO.getUsername());
         user.setPassword(encoder.encode(userDTO.getPassword()));
@@ -159,7 +161,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         var user = this.userRepository.findByUsername(username);
 
         if (user == null)
-            throw new ValidationException(HttpStatus.NOT_FOUND, "User not found with provided username", "/api/v1/user/" + username);
+            throw new ValidationException(HttpStatus.NOT_FOUND, USER_NOT_FOUND, USER_PATH + username);
 
         this.userRepository.delete(user);
     }

@@ -14,34 +14,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+import static com.ifsc.secstor.api.advice.paths.Paths.REGISTER;
+import static com.ifsc.secstor.api.advice.paths.Paths.REGISTER_BASE;
+import static com.ifsc.secstor.api.util.Constants.*;
+
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/v1")
+@RequestMapping(REGISTER_BASE)
 public class PageController {
 
     private final UserServiceImplementation userService;
 
-    @GetMapping("/register")
+    @GetMapping(REGISTER)
     public String registerForm(Model model) {
         List<String> usernames = userService.findAllUsernames();
         FormDTO user = new FormDTO();
 
-        model.addAttribute("user", user);
-        model.addAttribute("usernames", usernames);
+        model.addAttribute(USER, user);
+        model.addAttribute(USERNAMES, usernames);
 
-        return "register";
+        return REGISTER_TEMPLATE;
     }
 
-    @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") @Validated FormDTO user, Model model) {
-        UserDTO toSave = new UserDTO(user.getUsername(), user.getPassword(), "CLIENT");
+    @PostMapping(REGISTER)
+    public String submitForm(@ModelAttribute(USER) @Validated FormDTO user, Model model) {
+        UserDTO toSave = new UserDTO(user.getUsername(), user.getPassword(), CLIENT.toUpperCase());
 
         try {
             userService.saveUser(toSave);
-            return "success";
+            return SUCCESS_TEMPLATE;
         } catch (Exception exception) {
-            model.addAttribute("error", exception.getMessage());
-            return "error";
+            model.addAttribute(ERROR, exception.getMessage());
+            return ERROR_TEMPLATE;
         }
     }
 }

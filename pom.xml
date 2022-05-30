@@ -125,6 +125,12 @@
 			<version>20220320</version>
 		</dependency>
 		<!-- End of secret sharing -->
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.9</version>
+		</dependency>
 	</dependencies>
 	
 	<build>

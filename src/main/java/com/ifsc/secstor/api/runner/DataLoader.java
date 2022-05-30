@@ -9,6 +9,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import static com.ifsc.secstor.api.util.Constants.ADMINISTRATOR;
+
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
@@ -20,7 +22,8 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         //Admin user
-        this.userServiceImplementation.saveUser(new UserDTO(config.adminUsername(), config.adminPassword(), "ADMINISTRATOR"));
+        this.userServiceImplementation.saveUser(new UserDTO(config.adminUsername(), config.adminPassword(),
+                ADMINISTRATOR.toUpperCase()));
 
         //PVSS Numbers
         this.numberServiceImplementation.saveNumber("7252249461288580143561694950295235296446758344064384143050554279282519856810290308330718965763540666366914596896711370260664276062461257127015312329865859", "3799057160937092801630750438916289126229892053406182295891701918335325814837295153756930136392994500565748561567090726903736682933820322225260746882745781", "2121861473785544480164075733083600365469888161398060618624810330592475211475818645670230197236657668269371468528402070711161710186071506979943488549019489", "4764921952374849780629769359757002569825278117859379709599305547172623946533110341744507607758923310960354539581770305112270173031590572227669122194153602");

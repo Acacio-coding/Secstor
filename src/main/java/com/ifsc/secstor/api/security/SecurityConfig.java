@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import static com.ifsc.secstor.api.advice.paths.Paths.*;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.ALWAYS;
 
@@ -38,42 +39,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManagerBean());
-        authenticationFilter.setFilterProcessesUrl("/api/v1/login");
+        authenticationFilter.setFilterProcessesUrl(LOGIN_ROUTE);
 
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringAntMatchers("/api/v1/login/**",
-                        "/api/v1/token/refresh/**",
-                        "/api/v1/user/save/**",
-                        "/api/v1/secret-sharing/split/**",
-                        "/api/v1/secret-sharing/reconstruct/**",
-                        "/api/v1/users/**",
-                        "/api/v1/user/**");
+                .ignoringAntMatchers(LOGIN_ROUTE + "/**",
+                        REFRESH_TOKEN_ROUTE,
+                        SAVE_USER_ROUTE,
+                        SPLIT_ROUTE,
+                        RECONSTRUCT_ROUTE,
+                        ANONYMIZATION_ROUTE,
+                        GET_USERS_ROUTE,
+                        USER_ROUTE);
 
         http.sessionManagement().sessionCreationPolicy(ALWAYS);
 
         http.authorizeRequests()
-                .antMatchers("/v1/register/**", "/api/v1/login/**", "/api/v1/token/refresh/**", "/api/v1/user/save/**")
+                .antMatchers(REGISTER_ROUTE, LOGIN_ROUTE + "/**", REFRESH_TOKEN_ROUTE, SAVE_USER_ROUTE)
                 .permitAll();
 
-        http.authorizeRequests().antMatchers(POST, "/api/v1/secret-sharing/split/**",
-                        "/api/v1/secret-sharing/reconstruct/**")
+        http.authorizeRequests().antMatchers(POST, SPLIT_ROUTE, RECONSTRUCT_ROUTE, ANONYMIZATION_ROUTE)
                 .hasAnyAuthority(Role.ADMINISTRATOR.name(), Role.CLIENT.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
-        http.authorizeRequests().antMatchers(GET, "/api/v1/users/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
+        http.authorizeRequests().antMatchers(GET, GET_USERS_ROUTE).hasAnyAuthority(Role.ADMINISTRATOR.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
-        http.authorizeRequests().antMatchers(GET, "/api/v1/user/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
+        http.authorizeRequests().antMatchers(GET, USER_ROUTE).hasAnyAuthority(Role.ADMINISTRATOR.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
-        http.authorizeRequests().antMatchers(PUT, "/api/v1/user/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
+        http.authorizeRequests().antMatchers(PUT, USER_ROUTE).hasAnyAuthority(Role.ADMINISTRATOR.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
-        http.authorizeRequests().antMatchers(DELETE, "/user/v1/user/**").hasAnyAuthority(Role.ADMINISTRATOR.name())
+        http.authorizeRequests().antMatchers(DELETE, USER_ROUTE).hasAnyAuthority(Role.ADMINISTRATOR.name())
                 .and().exceptionHandling().accessDeniedHandler(new AuthorizationHandler())
                 .and().exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
@@ -85,10 +86,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/static/**")
-                .antMatchers("/css/**")
-                .antMatchers("/js/**")
-                .antMatchers("/img/**");
+                .antMatchers(STATIC_ROUTE)
+                .antMatchers(CSS_ROUTE)
+                .antMatchers(JS_ROUTE)
+                .antMatchers(IMG_ROUTE);
     }
 
     @Bean

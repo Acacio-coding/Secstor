@@ -15,18 +15,22 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ifsc.secstor.api.advice.messages.ErrorMessages.VALIDATION_ERROR;
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     @NonNull
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, @NonNull final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
+            MethodArgumentNotValidException ex, @NonNull final HttpHeaders headers,
+            final HttpStatus status, final WebRequest request) {
         List<String> details = new ArrayList<>();
 
         ex.getBindingResult().getAllErrors().forEach(error -> details.add(error.getDefaultMessage()));
 
-        var error = new ErrorModel(status.value(), "Validation Error", details.toString().replaceAll("[\\[\\]]", ""),
+        var error = new ErrorModel(status.value(), VALIDATION_ERROR,
+                details.toString().replaceAll("[\\[\\]]", ""),
                 request.getDescription(false).substring("uri=".length()));
 
         return new ResponseEntity<>(error, status);
