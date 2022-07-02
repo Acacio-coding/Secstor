@@ -1,7 +1,7 @@
 package com.ifsc.secstor.api.security.entrypoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ifsc.secstor.api.model.ErrorModel;
+import com.ifsc.secstor.api.model.UserErrorModel;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -20,7 +20,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setStatus(UNAUTHORIZED.value());
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getWriter(), new ErrorModel(UNAUTHORIZED.value(), AUTHENTICATION_ERROR,
+        new ObjectMapper().writeValue(response.getWriter(), new UserErrorModel(UNAUTHORIZED.value(), AUTHENTICATION_ERROR,
                 NOT_AUTHENTICATED, request.getServletPath()));
     }
 }

@@ -8,7 +8,7 @@
  * Open. You can then make changes to the template in the Source Editor.
  */
 
-package com.ufsc.das.gcseg.pvss.exception;
+package com.ufsc.das.gcseg.gcseg.pvss.exception;
 
 import java.io.Serial;
 

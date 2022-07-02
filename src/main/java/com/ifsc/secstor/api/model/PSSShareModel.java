@@ -1,6 +1,9 @@
 package com.ifsc.secstor.api.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -9,9 +12,10 @@ import java.util.List;
 @Getter
 @Setter
 public class PSSShareModel {
-    private List<String> shares;
-    private List<String[]> macKeys;
-    private List<String[]> macs;
+    private List<IndexKeyPair> shares;
+    private List<IndexArrayPair> macKeys;
+    private List<IndexArrayPair> macs;
+    private int originalLength;
 
     @Override
     public String toString() {

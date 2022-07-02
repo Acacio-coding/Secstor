@@ -1,7 +1,7 @@
 package com.ifsc.secstor.api.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ifsc.secstor.api.model.ErrorModel;
+import com.ifsc.secstor.api.model.UserErrorModel;
 import com.ifsc.secstor.api.security.jwt.JWTUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -57,6 +57,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.setStatus(UNAUTHORIZED.value());
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getWriter(),
-                new ErrorModel(UNAUTHORIZED.value(), AUTHENTICATION_ERROR, USER_NOT_FOUND, request.getServletPath()));
+                new UserErrorModel(UNAUTHORIZED.value(), AUTHENTICATION_ERROR, USER_NOT_FOUND, request.getServletPath()));
     }
 }

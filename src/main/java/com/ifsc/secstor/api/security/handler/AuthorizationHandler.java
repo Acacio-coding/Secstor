@@ -2,6 +2,7 @@ package com.ifsc.secstor.api.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsc.secstor.api.model.ErrorModel;
+import com.ifsc.secstor.api.model.UserErrorModel;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -20,7 +21,7 @@ public class AuthorizationHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         response.setStatus(FORBIDDEN.value());
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getWriter(), new ErrorModel(FORBIDDEN.value(), AUTH_ERROR,
+        new ObjectMapper().writeValue(response.getWriter(), new UserErrorModel(FORBIDDEN.value(), AUTH_ERROR,
                 INSUFFICIENT_PERMISSION, request.getServletPath()));
     }
 }

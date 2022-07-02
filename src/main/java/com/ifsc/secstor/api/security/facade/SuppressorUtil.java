@@ -1,4 +1,4 @@
-package com.ifsc.secstor.facade;
+package com.ifsc.secstor.api.security.facade;
 
 public final class SuppressorUtil {
 

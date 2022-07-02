@@ -1,4 +1,4 @@
-package com.ufsc.das.gcseg.secretsharing;
+package com.ufsc.das.gcseg.gcseg.secretsharing;
 
 import com.ifsc.secstor.api.model.IndexKeyPair;
 import lombok.Getter;

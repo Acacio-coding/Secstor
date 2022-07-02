@@ -8,9 +8,12 @@
  * Open. You can then make changes to the template in the Source Editor.
  */
 
-package com.ufsc.das.gcseg.pvss.engine;
+package com.ufsc.das.gcseg.gcseg.pvss.engine;
 
 
+import com.ufsc.das.gcseg.pvss.engine.PVSSEngine;
+import com.ufsc.das.gcseg.pvss.engine.PublicInfoPVSS;
+import com.ufsc.das.gcseg.pvss.engine.Share;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
 import lombok.Getter;
 import lombok.Setter;

@@ -12,11 +12,9 @@ public class Constants {
     public static final String IDENTIFIER = "identifier";
     public static final String SENSITIVE = "sensitive";
     public static final String QUASI_IDENTIFIER = "quasi-identifier";
-
     public static final String SHAMIR = "shamir";
     public static final String PSS = "pss";
     public static final String CSS = "css";
-
     public static final String KRAWCZYK = "krawczyk";
     public static final String PVSS = "pvss";
     public static final String SECRET = "secret";
@@ -41,4 +39,14 @@ public class Constants {
     public static final String REFRESH_TOKEN = "refresh_token";
     public static final String ACCESS_TOKEN = "access_token";
     public static final String PASSWORD = "password";
+    public static final String SHARE = "share";
+    public static final String MACKEY = "macKey";
+    public static final String INNER_MACKEY = "inner object of macKeys";
+    public static final String MAC = "mac";
+    public static final String INNER_MAC = "inner object of macs";
+    public static final String FINGERPRINT = "fingerprint";
+    public static final String ENCKEY = "encKey";
+    public static final String PARAMETERS = "parameters";
+    public static final String DOYOURBEST = "doYourBest";
+    public static final String KEY = "key";
 }

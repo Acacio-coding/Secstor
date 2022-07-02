@@ -7,12 +7,14 @@ import com.at.archistar.crypto.ShamirEngine;
 import com.at.archistar.crypto.data.InvalidParametersException;
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.at.archistar.crypto.secretsharing.WeakSecurityException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsc.secstor.api.advice.exception.ValidationException;
 import com.ifsc.secstor.api.dto.ReconstructDTO;
 import com.ifsc.secstor.api.dto.SplitDTO;
-import com.ifsc.secstor.facade.ArchistarEngine;
-import com.ifsc.secstor.facade.Engine;
-import com.ifsc.secstor.facade.PVSSEngine;
+import com.ifsc.secstor.api.model.*;
+import com.ifsc.secstor.api.security.facade.ArchistarEngine;
+import com.ifsc.secstor.api.security.facade.Engine;
+import com.ifsc.secstor.api.security.facade.PVSSEngine;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
 import com.ufsc.das.gcseg.secretsharing.SecretShareEngine;
 import org.json.JSONObject;
@@ -80,33 +82,59 @@ public class SecretSharingImplementation implements SecretSharingService {
     public String reconstruct(ReconstructDTO reconstructDTO) throws UnsupportedEncodingException,
             InvalidParametersException, InvalidVSSScheme, ReconstructionException {
 
-        if (reconstructDTO.getSecret() == null || reconstructDTO.getSecret() == "")
+        if (reconstructDTO == null)
             throw new ValidationException(HttpStatus.BAD_REQUEST, NULL_SECRET,
                     SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
-        JSONObject baseObject;
+        JSONObject base;
         JSONObject secret;
+        boolean doYourBest;
 
         try {
-            baseObject = new JSONObject(reconstructDTO);
-            secret = (JSONObject) baseObject.get(SECRET);
-        } catch (Exception exception) {
+            base = new JSONObject(reconstructDTO);
+            secret = base.getJSONObject(SECRET);
+        } catch (Exception e) {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
                     INVALID_SECRET, SECRET_SHARING_BASE_AND_RECONSTRUCT);
         }
 
-        if (secret.has(MACKEYS))
-            return this.pss.reconstruct(secret);
-        else if (secret.has(FINGERPRINTS))
-            return this.css.reconstruct(secret);
-        else if (secret.has(ENCKEYS))
-            return this.krawczyk.reconstruct(secret);
-        else if (secret.has(MODULUS))
-            return this.pvss.reconstruct(secret);
-        else if (secret.has(SHARES))
-            return this.shamir.reconstruct(secret);
+        try {
+            doYourBest = base.getJSONObject(PARAMETERS).getBoolean(DOYOURBEST);
+        } catch (Exception e) {
+            doYourBest = false;
+        }
+
+        Object requestObject;
+
+        if (secret.has(MACKEYS)) {
+            requestObject = mapObject(secret, PSSShareModel.class);
+            return this.pss.reconstruct(requestObject, doYourBest);
+        } else if (secret.has(FINGERPRINTS)) {
+            requestObject = mapObject(secret, CSSShareModel.class);
+            return this.css.reconstruct(requestObject, doYourBest);
+        } else if (secret.has(ENCKEYS)) {
+            requestObject = mapObject(secret, KrawczykShareModel.class);
+            return this.krawczyk.reconstruct(requestObject, doYourBest);
+        } else if (secret.has(MODULUS)) {
+            requestObject = mapObject(secret, PVSSShareModel.class);
+            return this.pvss.reconstruct(requestObject, doYourBest);
+        } else if (secret.has(SHARES)) {
+            requestObject = mapObject(secret, ShamirShareModel.class);
+            return this.shamir.reconstruct(requestObject, doYourBest);
+        }
 
         throw new ValidationException(HttpStatus.BAD_REQUEST,
                 NO_MATCH_SECRET, SECRET_SHARING_BASE_AND_RECONSTRUCT);
+    }
+
+    private <T> Object mapObject(JSONObject requestSecret, Class<T> clazz) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return mapper.readValue(requestSecret.toString(), clazz);
+        } catch (Exception e) {
+            throw new ValidationException(HttpStatus.BAD_REQUEST,
+                    e.getMessage(), SECRET_SHARING_BASE_AND_RECONSTRUCT);
+        }
     }
 }

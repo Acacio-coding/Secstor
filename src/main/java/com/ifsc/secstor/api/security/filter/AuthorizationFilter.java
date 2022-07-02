@@ -1,7 +1,7 @@
 package com.ifsc.secstor.api.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ifsc.secstor.api.model.ErrorModel;
+import com.ifsc.secstor.api.model.UserErrorModel;
 import com.ifsc.secstor.api.security.jwt.JWTUtils;
 import lombok.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -79,6 +79,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
     private void setResponse(HttpServletResponse response, int status, String errorTitle, String errorDetail, String path) throws IOException {
         response.setStatus(status);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), new ErrorModel(status, errorTitle, errorDetail, path));
+        new ObjectMapper().writeValue(response.getOutputStream(), new UserErrorModel(status, errorTitle, errorDetail, path));
     }
 }

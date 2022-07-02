@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class ReconstructDTO {
 
+    private Object parameters;
     private Object secret;
 }

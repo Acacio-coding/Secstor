@@ -2,9 +2,9 @@ package com.ifsc.secstor.api.service;
 
 import com.ifsc.secstor.api.advice.exception.ValidationException;
 import com.ifsc.secstor.api.dto.AnonymizationDTO;
-import com.ifsc.secstor.facade.GeneralizatorUtil;
-import com.ifsc.secstor.facade.RandomizerUtil;
-import com.ifsc.secstor.facade.SuppressorUtil;
+import com.ifsc.secstor.api.security.facade.GeneralizatorUtil;
+import com.ifsc.secstor.api.security.facade.RandomizerUtil;
+import com.ifsc.secstor.api.security.facade.SuppressorUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;

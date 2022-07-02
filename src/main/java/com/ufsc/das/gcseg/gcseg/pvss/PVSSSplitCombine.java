@@ -1,4 +1,4 @@
-package com.ufsc.das.gcseg.pvss;
+package com.ufsc.das.gcseg.gcseg.pvss;
 
 import com.ifsc.secstor.api.model.IndexKeyPair;
 import com.ifsc.secstor.api.model.NumberModel;

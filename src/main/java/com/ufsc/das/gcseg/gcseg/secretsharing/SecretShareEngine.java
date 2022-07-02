@@ -1,7 +1,9 @@
-package com.ufsc.das.gcseg.secretsharing;
+package com.ufsc.das.gcseg.gcseg.secretsharing;
 
 import com.ufsc.das.gcseg.pvss.PVSSSplitCombine;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
+import com.ufsc.das.gcseg.secretsharing.SharestoCombine;
+import com.ufsc.das.gcseg.secretsharing.SplitedShares;
 
 import java.io.UnsupportedEncodingException;
 

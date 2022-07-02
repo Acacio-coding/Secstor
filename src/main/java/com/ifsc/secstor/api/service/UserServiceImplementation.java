@@ -3,8 +3,8 @@ package com.ifsc.secstor.api.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsc.secstor.api.advice.exception.*;
 import com.ifsc.secstor.api.dto.UserDTO;
-import com.ifsc.secstor.api.model.ErrorModel;
 import com.ifsc.secstor.api.model.Role;
+import com.ifsc.secstor.api.model.UserErrorModel;
 import com.ifsc.secstor.api.model.UserModel;
 import com.ifsc.secstor.api.repository.UserRepository;
 import com.ifsc.secstor.api.security.jwt.JWTUtils;
@@ -63,7 +63,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         if (authorizationHeader == null || authorizationHeader.isBlank()) {
             response.setStatus(FORBIDDEN.value());
             new ObjectMapper().writeValue(response.getWriter(),
-                    new ErrorModel(FORBIDDEN.value(), AUTH_ERROR, NULL_AUTH_HEADER, request.getServletPath()));
+                    new UserErrorModel(FORBIDDEN.value(), AUTH_ERROR, NULL_AUTH_HEADER, request.getServletPath()));
         } else if (authorizationHeader.startsWith(TOKEN_BEARER)) {
             try {
                 JWTUtils jwtUtils = new JWTUtils();
@@ -77,7 +77,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
             } catch (Exception exception) {
                 response.setStatus(FORBIDDEN.value());
                 new ObjectMapper().writeValue(response.getOutputStream(),
-                        new ErrorModel(FORBIDDEN.value(), AUTH_ERROR, exception.getMessage(), request.getServletPath()));
+                        new UserErrorModel(FORBIDDEN.value(), AUTH_ERROR, exception.getMessage(), request.getServletPath()));
             }
         }
 

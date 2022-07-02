@@ -1,6 +1,9 @@
 package com.ifsc.secstor.api.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -10,7 +13,10 @@ import java.util.List;
 @Getter
 @Setter
 public class PVSSShareModel {
-    private List<String> shares;
+    private List<IndexKeyPair> shares;
+    private int shareOriginalLength;
     private String key;
+    private int keyOriginalLength;
     private BigInteger modulus;
+    private int modulusOriginalLength;
 }

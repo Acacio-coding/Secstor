@@ -8,10 +8,13 @@
  * Open. You can then make changes to the template in the Source Editor.
  */
 
-package com.ufsc.das.gcseg.pvss.engine;
+package com.ufsc.das.gcseg.gcseg.pvss.engine;
 
 import com.ifsc.secstor.api.service.NumberServiceImplementation;
 import com.ifsc.secstor.api.util.BeanUtil;
+import com.ufsc.das.gcseg.pvss.engine.PublicInfoPVSS;
+import com.ufsc.das.gcseg.pvss.engine.PublishedShares;
+import com.ufsc.das.gcseg.pvss.engine.Share;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
 import lombok.Getter;
 import lombok.Setter;
@@ -100,7 +103,7 @@ public class PVSSEngine {
 		return getPublicInfo().getGeneratorG().modPow(secretKey, getPublicInfo().getGroupPrimeOrder());
 	}
 
-	public PublishedShares generalPublishShares(byte[] data, BigInteger[] publicKeys) throws InvalidVSSScheme {
+	public com.ufsc.das.gcseg.pvss.engine.PublishedShares generalPublishShares(byte[] data, BigInteger[] publicKeys) throws InvalidVSSScheme {
 		BigInteger secret;
 		byte[] ensecret;
 
@@ -117,7 +120,7 @@ public class PVSSEngine {
 		return publishShares(secret, U, publicKeys);
 	}
 
-	public PublishedShares publishShares(BigInteger secret, byte[] U, BigInteger[] publicKeys) throws InvalidVSSScheme {
+	public com.ufsc.das.gcseg.pvss.engine.PublishedShares publishShares(BigInteger secret, byte[] U, BigInteger[] publicKeys) throws InvalidVSSScheme {
 		int t = getPublicInfo().getT();
 		int n = getPublicInfo().getN();
 		BigInteger g = getPublicInfo().getGeneratorg();

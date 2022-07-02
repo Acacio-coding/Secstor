@@ -1,7 +1,10 @@
 package com.ifsc.secstor.api.advice;
 
-import com.ifsc.secstor.api.advice.exception.*;
+import com.ifsc.secstor.api.advice.exception.ReconstructException;
+import com.ifsc.secstor.api.advice.exception.ValidationException;
 import com.ifsc.secstor.api.model.ErrorModel;
+import com.ifsc.secstor.api.model.ReconstructErrorModel;
+import com.ifsc.secstor.api.model.ValidationErrorModel;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,21 +18,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ifsc.secstor.api.advice.messages.ErrorMessages.VALIDATION_ERROR;
-
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     @NonNull
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, @NonNull final HttpHeaders headers,
-            final HttpStatus status, final WebRequest request) {
+            MethodArgumentNotValidException ex, @NonNull final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
         List<String> details = new ArrayList<>();
 
         ex.getBindingResult().getAllErrors().forEach(error -> details.add(error.getDefaultMessage()));
 
-        var error = new ErrorModel(status.value(), VALIDATION_ERROR,
+        var error = new ValidationErrorModel(status.value(), "Validation Error",
                 details.toString().replaceAll("[\\[\\]]", ""),
                 request.getDescription(false).substring("uri=".length()));
 
@@ -38,7 +38,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
     private ResponseEntity<ErrorModel> handleValidationException(ValidationException exception) {
-        var error = new ErrorModel(exception.getStatus().value(), exception.getTitle(), exception.getMessage(), exception.getPath());
+        var error = new ValidationErrorModel(exception.getStatus().value(), exception.getTitle(),
+                exception.getMessage(), exception.getPath());
+        return new ResponseEntity<>(error, exception.getStatus());
+    }
+
+    @ExceptionHandler(ReconstructException.class)
+    private ResponseEntity<ReconstructErrorModel> handleReconstructException(ReconstructException exception) {
+        var error = new ReconstructErrorModel(exception.getStatus().value(), exception.getTitle(),
+                exception.getMessage(), exception.getPath(), exception.getKeyIndex(), exception.getKey(), exception.getType());
         return new ResponseEntity<>(error, exception.getStatus());
     }
 }
