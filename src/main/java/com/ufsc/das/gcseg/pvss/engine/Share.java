@@ -11,6 +11,8 @@
 package com.ufsc.das.gcseg.pvss.engine;
 
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -19,6 +21,8 @@ import java.math.BigInteger;
  *
  * @author neves
  */
+@Getter
+@Setter
 public class Share implements Externalizable {
 
 	private int index;
@@ -26,7 +30,6 @@ public class Share implements Externalizable {
 	private BigInteger share;
 	private BigInteger proofc;
 	private BigInteger proofr;
-
 	private byte[] U; // for general secret sharing
 
 	public Share() {
@@ -35,7 +38,6 @@ public class Share implements Externalizable {
 	/** Creates a new instance of Share */
 	public Share(int index, BigInteger encryptedShare, BigInteger share, BigInteger proofc, BigInteger proofr,
 			byte[] U) {
-
 		this.index = index;
 		this.encryptedShare = encryptedShare;
 		this.share = share;
@@ -46,18 +48,10 @@ public class Share implements Externalizable {
 	}
 
 	public void writeExternal(ObjectOutput out) throws IOException {
-		// System.out.println("CHAMOU writeExternal");
 
-		/*
-		 * out.writeInt(index); out.writeUTF(encryptedShare.toString());
-		 * out.writeUTF(share.toString()); out.writeUTF(proofc.toString());
-		 * out.writeUTF(proofr.toString()); out.writeInt(U.length);
-		 * out.write(U);
-		 */
+		byte[] b = encryptedShare.toByteArray();
 
 		out.writeInt(index);
-		// System.out.println("tam :"+share.toByteArray().length);
-		byte[] b = encryptedShare.toByteArray();
 		out.writeInt(b.length);
 		out.write(b);
 
@@ -77,19 +71,12 @@ public class Share implements Externalizable {
 		out.write(U);
 	}
 
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		// System.out.println("CHAMOU readExternal");
-		/*
-		 * index = in.readInt(); encryptedShare = new BigInteger(in.readUTF());
-		 * share = new BigInteger(in.readUTF()); proofc = new
-		 * BigInteger(in.readUTF()); proofr = new BigInteger(in.readUTF()); int
-		 * l = in.readInt(); U = new byte[l]; in.readFully(U);
-		 */
-
+	public void readExternal(ObjectInput in) throws IOException {
 		index = in.readInt();
 
 		int l = in.readInt();
 		byte[] b = new byte[l];
+
 		in.readFully(b);
 		encryptedShare = new BigInteger(b);
 
@@ -119,8 +106,6 @@ public class Share implements Externalizable {
 		BigInteger a1 = info.getGeneratorG().modPow(proofr, q).multiply(publicKey.modPow(proofc, q)).mod(q);
 		BigInteger a2 = share.modPow(proofr, q).multiply(encryptedShare.modPow(proofc, q)).mod(q);
 
-		// System.out.println("a1="+a1+", a2="+a2);
-
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
 
 		try {
@@ -134,33 +119,7 @@ public class Share implements Externalizable {
 
 		BigInteger h = PVSSEngine.hash(info, baos.toByteArray()).mod(q);
 
-		// System.out.println("h="+h);
-
 		return h.equals(proofc);
-	}
-
-	public int getIndex() {
-		return index;
-	}
-
-	public BigInteger getShare() {
-		return share;
-	}
-	
-	public BigInteger getEncryptedShare() {
-		return encryptedShare;
-	}
-
-	public BigInteger getProofc() {
-		return proofc;
-	}
-
-	public BigInteger getProofr() {
-		return proofr;
-	}
-
-	public byte[] getU() {
-		return U;
 	}
 
 	public String toString() {

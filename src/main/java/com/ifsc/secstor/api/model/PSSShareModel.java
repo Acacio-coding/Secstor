@@ -9,9 +9,10 @@ import java.util.List;
 @Getter
 @Setter
 public class PSSShareModel {
-    private List<String> shares;
-    private List<String[]> macKeys;
-    private List<String[]> macs;
+    private List<IndexKeyPair> shares;
+    private List<IndexArrayPair> macKeys;
+    private List<IndexArrayPair> macs;
+    private int originalLength;
 
     @Override
     public String toString() {

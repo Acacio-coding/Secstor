@@ -12,6 +12,8 @@ package com.ufsc.das.gcseg.pvss.engine;
 
 
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -21,15 +23,15 @@ import java.util.Arrays;
  *
  * @author neves
  */
+@Getter
+@Setter
 public class PublishedShares implements Externalizable {
 
 	private BigInteger[] commitments;
 	private BigInteger[] encriptedShares;
 	private BigInteger[] proofsr;
 	private BigInteger proofc;
-
 	private byte[] U; // general secret share
-
 	private int hashcode;
 
 	public PublishedShares() {
@@ -38,12 +40,10 @@ public class PublishedShares implements Externalizable {
 	/** Creates a new instance of PublishedShares */
 	public PublishedShares(BigInteger[] commitments, BigInteger[] encriptedShares, BigInteger[] proofsr,
 			BigInteger proofc, byte[] U) {
-
 		this.commitments = commitments;
 		this.encriptedShares = encriptedShares;
 		this.proofsr = proofsr;
 		this.proofc = proofc;
-
 		this.U = U;
 	}
 
@@ -68,27 +68,31 @@ public class PublishedShares implements Externalizable {
 
 	private void writeBIArray(BigInteger[] bis, ObjectOutput out) throws IOException {
 		out.writeInt(bis.length);
-		for (int i = 0; i < bis.length; i++) {
-			writeBI(bis[i], out);
+
+		for (BigInteger bi : bis) {
+			writeBI(bi, out);
 		}
 	}
 
 	private BigInteger readBI(ObjectInput in) throws IOException {
 		byte[] b = new byte[in.readInt()];
 		in.readFully(b);
+
 		return new BigInteger(b);
 	}
 
 	private BigInteger[] readBIArray(ObjectInput in) throws IOException {
 		int tam = in.readInt();
 		BigInteger[] ret = new BigInteger[tam];
+
 		for (int i = 0; i < tam; i++) {
 			ret[i] = readBI(in);
 		}
+
 		return ret;
 	}
 
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+	public void readExternal(ObjectInput in) throws IOException {
 		hashcode = in.readInt();
 		U = new byte[in.readInt()];
 		in.readFully(U);
@@ -96,26 +100,6 @@ public class PublishedShares implements Externalizable {
 		encriptedShares = readBIArray(in);
 		proofsr = readBIArray(in);
 		proofc = readBI(in);
-	}
-
-	public byte[] getU() {
-		return this.U;
-	}
-
-	public BigInteger[] getCommitments() {
-		return commitments;
-	}
-
-	public BigInteger[] getEncriptedShares() {
-		return encriptedShares;
-	}
-
-	public BigInteger[] getProofsr() {
-		return proofsr;
-	}
-
-	public BigInteger getProofc() {
-		return proofc;
 	}
 
 	public boolean verify(PublicInfoPVSS info, BigInteger[] publicKeys) throws InvalidVSSScheme {
@@ -136,10 +120,12 @@ public class PublishedShares implements Externalizable {
 			// calcs Xi
 			BigInteger exp = BigInteger.ONE;
 			BigInteger mult = commitments[0];
+
 			for (int j = 1; j < t; j++) {
 				exp = exp.multiply(BigInteger.valueOf(i + 1)).mod(qm1);
 				mult = mult.multiply(commitments[j].modPow(exp, q)).mod(q);
 			}
+
 			X[i] = mult;
 
 			BigInteger a1Temp = info.getGeneratorg().modPow(proofsr[i], q);
@@ -158,13 +144,6 @@ public class PublishedShares implements Externalizable {
 			}
 		}
 
-		/*
-		 * System.out.println("Verificacao dos Shares Distribuidos:");
-		 * System.out.println(" a1="+Arrays.toString(a1)); System.out.println(
-		 * " a2="+Arrays.toString(a2)); System.out.println(" h="
-		 * +PVSSEngine.hash(info,baos.toByteArray()).mod(q));
-		 */
-
 		return PVSSEngine.hash(info, baos.toByteArray()).mod(qm1).equals(proofc);
 	}
 
@@ -176,20 +155,12 @@ public class PublishedShares implements Externalizable {
 
 		BigInteger xinverse = secretKey.modInverse(qm1);
 
-		// System.out.println("1/x="+xinverse);
-
 		BigInteger share = encriptedShares[index].modPow(xinverse, q);
-
-		// System.out.println("server enc share "+index+":
-		// "+encriptedShares[index]);
-		// System.out.println("server share "+index+": "+share);
 
 		BigInteger w = BigInteger.valueOf(11);
 
 		BigInteger a1 = info.getGeneratorG().modPow(w, q);
 		BigInteger a2 = share.modPow(w, q);
-
-		// System.out.println("a1="+a1+", a2="+a2);
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
 
@@ -218,6 +189,6 @@ public class PublishedShares implements Externalizable {
 
 	public String toString() {
 		return "commitments=" + Arrays.toString(commitments) + ", encriptedShares=" + Arrays.toString(encriptedShares)
-				+ ", r\'s=" + Arrays.toString(proofsr) + ", c=" + proofc;
+				+ ", r's=" + Arrays.toString(proofsr) + ", c=" + proofc;
 	}
 }

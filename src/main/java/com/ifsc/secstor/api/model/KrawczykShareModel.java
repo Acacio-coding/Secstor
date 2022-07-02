@@ -9,10 +9,11 @@ import java.util.List;
 @Getter
 @Setter
 public class KrawczykShareModel {
-    private List<String> shares;
+    private List<IndexKeyPair> shares;
+    private List<IndexKeyPair> encKeys;
     private Integer originalLength;
     private Integer encAlgorithm;
-    private List<String> encKeys;
+
 
     @Override
     public String toString() {

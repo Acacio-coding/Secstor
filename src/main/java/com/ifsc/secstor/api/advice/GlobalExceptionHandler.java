@@ -2,6 +2,8 @@ package com.ifsc.secstor.api.advice;
 
 import com.ifsc.secstor.api.advice.exception.*;
 import com.ifsc.secstor.api.model.ErrorModel;
+import com.ifsc.secstor.api.model.ReconstructErrorModel;
+import com.ifsc.secstor.api.model.ValidationErrorModel;
 import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ex.getBindingResult().getAllErrors().forEach(error -> details.add(error.getDefaultMessage()));
 
-        var error = new ErrorModel(status.value(), "Validation Error", details.toString().replaceAll("[\\[\\]]", ""),
+        var error = new ValidationErrorModel(status.value(), "Validation Error",
+                details.toString().replaceAll("[\\[\\]]", ""),
                 request.getDescription(false).substring("uri=".length()));
 
         return new ResponseEntity<>(error, status);
@@ -34,7 +37,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
     private ResponseEntity<ErrorModel> handleValidationException(ValidationException exception) {
-        var error = new ErrorModel(exception.getStatus().value(), exception.getTitle(), exception.getMessage(), exception.getPath());
+        var error = new ValidationErrorModel(exception.getStatus().value(), exception.getTitle(),
+                exception.getMessage(), exception.getPath());
+        return new ResponseEntity<>(error, exception.getStatus());
+    }
+
+    @ExceptionHandler(ReconstructException.class)
+    private ResponseEntity<ReconstructErrorModel> handleReconstructException(ReconstructException exception) {
+        var error = new ReconstructErrorModel(exception.getStatus().value(), exception.getTitle(),
+                exception.getMessage(), exception.getPath(), exception.getKeyIndex(), exception.getKey(), exception.getType());
         return new ResponseEntity<>(error, exception.getStatus());
     }
 }

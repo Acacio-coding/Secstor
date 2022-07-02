@@ -5,14 +5,10 @@ import com.ifsc.secstor.api.dto.AnonymizationDTO;
 import com.ifsc.secstor.facade.GeneralizatorUtil;
 import com.ifsc.secstor.facade.RandomizerUtil;
 import com.ifsc.secstor.facade.SuppressorUtil;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 

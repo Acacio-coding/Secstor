@@ -12,8 +12,9 @@ import java.util.List;
 @Getter
 @Setter
 public class ShamirShareModel {
-    private List<String> shares;
 
+    private List<IndexKeyPair> shares;
+    private int originalLength;
     @Override
     public String toString() {
         return "ShamirShareModel";

@@ -13,6 +13,8 @@ package com.ufsc.das.gcseg.pvss.engine;
 import com.ifsc.secstor.api.util.BeanUtil;
 import com.ifsc.secstor.api.service.NumberServiceImplementation;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
+import lombok.Getter;
+import lombok.Setter;
 
 
 import javax.crypto.Cipher;
@@ -30,6 +32,8 @@ import java.security.SecureRandom;
  *
  * @author neves
  */
+@Getter
+@Setter
 public class PVSSEngine {
 
 	public static SecureRandom random = new SecureRandom();
@@ -39,7 +43,6 @@ public class PVSSEngine {
 	public PVSSEngine(PublicInfoPVSS publicInfo) {
 		this.publicInfo = publicInfo;
 	}
-
 
 	public static PVSSEngine getInstance(int n, int t, int numBits) throws InvalidVSSScheme {
 
@@ -59,7 +62,7 @@ public class PVSSEngine {
 		return new PVSSEngine(publicInfo);
 	}
 
-	public static PVSSEngine getInstance(PublicInfoPVSS publicInfo) throws InvalidVSSScheme {
+	public static PVSSEngine getInstance(PublicInfoPVSS publicInfo) {
 		return new PVSSEngine(publicInfo);
 	}
 
@@ -70,13 +73,10 @@ public class PVSSEngine {
 	public BigInteger generateSecret() {
 		int random = new SecureRandom().nextInt(1, 2000);
 		return new BigInteger(numberService.getNumbers((long) random).getSecret());
-		// return new BigInteger(getPublicInfo().getNumBits()-1, random);
 	}
 
 	public BigInteger[] generateSecretKeys() {
 		BigInteger[] secretKeys = new BigInteger[getPublicInfo().getN()];
-
-		// boolean passed = false;
 
 		for (int i = 0; i < secretKeys.length; i++) {
 			secretKeys[i] = generateRandomNumber();
@@ -88,11 +88,6 @@ public class PVSSEngine {
 				}
 			}
 		}
-		/*
-		 * secretKeys[0] = BigInteger.valueOf(3); secretKeys[1] =
-		 * BigInteger.valueOf(2); secretKeys[2] = BigInteger.valueOf(5);
-		 * secretKeys[3] = BigInteger.valueOf(7);
-		 */
 
 		return secretKeys;
 	}
@@ -100,8 +95,6 @@ public class PVSSEngine {
 	private BigInteger generateRandomNumber() {
 		int random = new SecureRandom().nextInt(1, 2000);
 		return new BigInteger(numberService.getNumbers((long) random).getG1());
-		// return BigInteger.probablePrime(getPublicInfo().getNumBits() - 1, new SecureRandom()));
-		// return new BigInteger(getPublicInfo().getNumBits()-1, random);
 	}
 
 	public BigInteger generatePublicKey(BigInteger secretKey) {
@@ -111,21 +104,21 @@ public class PVSSEngine {
 	public PublishedShares generalPublishShares(byte[] data, BigInteger[] publicKeys) throws InvalidVSSScheme {
 		BigInteger secret;
 		byte[] ensecret;
+
 		do {
-			// long l = System.currentTimeMillis();
 			secret = generateSecret();
-			// System.out.println("Time = "+(System.currentTimeMillis()-l));
+
 			BigInteger encryptedSecret = getPublicInfo().getGeneratorG().modPow(secret,
 					getPublicInfo().getGroupPrimeOrder());
 					
 			ensecret = encryptedSecret.toByteArray();
 		} while (ensecret.length < 24);
+
 		byte[] U = encrypt(getPublicInfo(), ensecret, data);
 		return publishShares(secret, U, publicKeys);
 	}
 
 	public PublishedShares publishShares(BigInteger secret, byte[] U, BigInteger[] publicKeys) throws InvalidVSSScheme {
-
 		int t = getPublicInfo().getT();
 		int n = getPublicInfo().getN();
 		BigInteger g = getPublicInfo().getGeneratorg();
@@ -134,21 +127,16 @@ public class PVSSEngine {
 		BigInteger qm1 = q.subtract(BigInteger.ONE);
 
 		BigInteger[] coefs = new BigInteger[t];
-		// coefs[0] = BigInteger.valueOf(7);
-		// coefs[1] = BigInteger.valueOf(10);
-
 		BigInteger[] commitments = new BigInteger[t];
 
 		coefs[0] = secret;
 		coefs[1] = BigInteger.valueOf(3);
-		// coefs[2] = BigInteger.valueOf(10);
-		// commitments[0] = g.modPow(secret,q);
 
 		for (int j = 0; j < t; j++) {
 			if (j != 0) {
 				coefs[j] = new BigInteger(getPublicInfo().getNumBits() - 1, random);
 			}
-			// coefs[j] = generateRandomNumber();
+
 			commitments[j] = g.modPow(coefs[j], q);
 		}
 
@@ -190,14 +178,6 @@ public class PVSSEngine {
 			}
 		}
 
-		// System.out.println("Published data:");
-		// System.out.println(" X="+Arrays.toString(X));
-		// System.out.println(" a1="+Arrays.toString(a1));
-		// System.out.println(" a2="+Arrays.toString(a2));
-		// System.out.println(" shares="+Arrays.toString(shares));
-		// System.out.println("
-		// encryptedshares="+Arrays.toString(encriptedShares));
-
 		BigInteger proofc = PVSSEngine.hash(getPublicInfo(), baos.toByteArray()).mod(qm1);
 
 		for (int i = 0; i < n; i++) {
@@ -208,20 +188,19 @@ public class PVSSEngine {
 	}
 
 	public byte[] generalCombineShares(Share[] shares) throws InvalidVSSScheme {
-		int[] x = new int[getPublicInfo().getT()];
-		int j = 0;
+		int[] x = new int[shares.length];
+
 		format(shares);
+
 		for (int i = 0; i < shares.length; i++) {
 			if (shares[i] != null) {
-				x[j++] = i;
-
-				if (j == x.length) {
-					break;
-				}
+				x[i] = shares[i].getIndex();
 			}
 		}
+
 		BigInteger encryptedSecret = combineShares(x, shares);
-		return decrypt(getPublicInfo(), encryptedSecret.toByteArray(), shares[x[0]].getU());
+
+		return decrypt(getPublicInfo(), encryptedSecret.toByteArray(), shares[0].getU());
 	}
 
 	public byte[] generalCombineShares(int[] x, Share[] shares) throws InvalidVSSScheme {
@@ -231,39 +210,31 @@ public class PVSSEngine {
 	}
 
 	public BigInteger combineShares(int[] x, Share[] shares) {
-		int t = publicInfo.getT();
-		// int n = publicInfo.getN();
-
-		if (x.length != t) {
-			throw new RuntimeException("There must be " + t + " diferent and valid shares");
+		if (x.length != shares.length) {
+			throw new RuntimeException("There must be " + publicInfo.getT() + " diferent and valid shares");
 		}
 
-		for (int i : x) {
+		for (int i = 0; i < x.length; i++) {
 			if (shares[i] == null) {
-				throw new RuntimeException("There must be " + t + " diferent and valid shares");
+				throw new RuntimeException("There must be " + publicInfo.getT() + " diferent and valid shares");
 			}
 		}
 
 		BigInteger q = publicInfo.getGroupPrimeOrder();
-		// BigInteger qm1 = q.subtract(BigInteger.ONE);
 
 		BigInteger secret = BigInteger.ONE;
 
-		// System.out.print("PVSSEngine.combineShares: Using shares");
-		for (int i = 0; i < t; i++) { // iterates over x[i]
-			// System.out.print(" "+x[i]);
-
+		for (int i = 0; i < x.length; i++) {
 			float lambda = 1;
-			for (int j = 0; j < t; j++) { // iterates over x[j]
+
+			for (int j = 0; j < x.length; j++) { // iterates over x[j]
 				if (j != i) {
 					lambda = lambda * ((float) (x[j] + 1) / (float) (x[j] - x[i]));
 				}
 			}
 
-			secret = secret.multiply(shares[x[i]].getShare().modPow(BigInteger.valueOf((long) lambda), q)).mod(q);
+			secret = secret.multiply(shares[i].getShare().modPow(BigInteger.valueOf((long) lambda), q)).mod(q);
 		}
-
-		// System.out.println();
 
 		return secret;
 	}
@@ -314,6 +285,7 @@ public class PVSSEngine {
 			} else {
 				md.reset();
 			}
+
 			return new BigInteger(md.digest(data));
 		} catch (NoSuchAlgorithmException e) {
 			throw new InvalidVSSScheme("Invalid hash algorithm " + info.getHashAlgorithm());
@@ -330,7 +302,7 @@ public class PVSSEngine {
 		} catch (NoSuchAlgorithmException ex) {
 			throw new InvalidVSSScheme("Invalid block cipher algorithm " + info.getHashAlgorithm());
 		} catch (Exception e) {
-			throw new RuntimeException("Problems encrypting", e);
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -339,11 +311,13 @@ public class PVSSEngine {
 			SecretKey k = SecretKeyFactory.getInstance("DESEDE").generateSecret(new DESedeKeySpec(key));
 			Cipher cipher = Cipher.getInstance("DESEDE");
 			cipher.init(Cipher.DECRYPT_MODE, k);
+
 			return cipher.doFinal(data);
 		} catch (NoSuchAlgorithmException ex) {
 			throw new InvalidVSSScheme("Invalid block cipher algorithm " + info.getHashAlgorithm());
 		} catch (Exception e) {
-			throw new RuntimeException("Problems decrypting", e);
+			throw new RuntimeException(e.getMessage() + " It also can be because the indexes were not in order, " +
+					"using doYourBest parameter can remove one of the keys due to validation error.");
 		}
 	}
 }

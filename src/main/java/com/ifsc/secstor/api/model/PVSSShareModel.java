@@ -10,7 +10,10 @@ import java.util.List;
 @Getter
 @Setter
 public class PVSSShareModel {
-    private List<String> shares;
+    private List<IndexKeyPair> shares;
+    private int shareOriginalLength;
     private String key;
+    private int keyOriginalLength;
     private BigInteger modulus;
+    private int modulusOriginalLength;
 }

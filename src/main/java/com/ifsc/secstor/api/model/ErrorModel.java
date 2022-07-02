@@ -8,10 +8,10 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @RequiredArgsConstructor
-public class ErrorModel {
+public abstract class ErrorModel {
     private final int status;
     private final String timestamp = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now());
     private final String title;
-    private final String detail;
+    private final String message;
     private final String path;
 }

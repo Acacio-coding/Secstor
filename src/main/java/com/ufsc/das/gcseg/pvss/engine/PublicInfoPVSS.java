@@ -1,5 +1,8 @@
 package com.ufsc.das.gcseg.pvss.engine;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -18,50 +21,29 @@ import java.math.BigInteger;
  *
  * @author neves
  */
+@Getter
+@Setter
 public class PublicInfoPVSS implements Serializable {
 
-	/**
-	 * 
-	 */
 	@Serial
 	private static final long serialVersionUID = 1L;
 	private final int n;
 	private final int t;
-
 	private final int numBits;
-
 	private final BigInteger groupPrimeOrder;
-
-	private BigInteger generatorg;
-	private BigInteger generatorG;
-
-	private String hashAlgorithm = "SHA-1";
+	private final BigInteger generatorg;
+	private final BigInteger generatorG;
 
 	/**
 	 * Creates a new instance of PublicInfo
 	 */
 	public PublicInfoPVSS(int n, int t, BigInteger groupPrimeOrder, BigInteger generatorg, BigInteger generatorG) {
-
 		this.n = n;
 		this.t = t;
-
 		this.numBits = groupPrimeOrder.bitLength() - 1;
-
 		this.groupPrimeOrder = groupPrimeOrder;
 		this.generatorg = generatorg;
 		this.generatorG = generatorG;
-	}
-
-	public int getN() {
-		return n;
-	}
-
-	public int getT() {
-		return t;
-	}
-
-	public BigInteger getGroupPrimeOrder() {
-		return groupPrimeOrder;
 	}
 
 	public BigInteger getGeneratorg() {
@@ -73,37 +55,8 @@ public class PublicInfoPVSS implements Serializable {
 	}
 
 	public String getHashAlgorithm() {
-		return hashAlgorithm;
+		return "SHA-1";
 	}
-
-	public int getNumBits() {
-		return numBits;
-	}
-
-	/*
-	 * public static PublicInfo createVSSPublicInfo(String fileName) throws
-	 * InvalidVSSScheme, IOException{ FileInputStream fileInputStream = new
-	 * FileInputStream(fileName);
-	 * 
-	 * Properties props = new Properties(); props.load(fileInputStream);
-	 * 
-	 * fileInputStream.close();
-	 * 
-	 * return createVSSPublicInfo(props); }
-	 * 
-	 * public static PublicInfo createVSSPublicInfo(Properties props) throws
-	 * InvalidVSSScheme {
-	 * 
-	 * int n = new Integer(props.getProperty("n")); int t = new
-	 * Integer(props.getProperty("t"));
-	 * 
-	 * 
-	 * BigInteger groupPrimeOrder = new
-	 * BigInteger(props.getProperty("groupPrimeOrder")); BigInteger generatorg =
-	 * ; BigInteger generatorG = ; BigInteger[] publicKeys = new BigInteger[n];
-	 * return new
-	 * PublicInfo(n,t,groupPrimeOrder,generatorg,generatorG,publicKeys); }
-	 */
 
 	public String toString() {
 		return "(" + n + "," + t + ")-" + numBits + " bits. q=" + groupPrimeOrder + ", g=" + generatorg + ", G="

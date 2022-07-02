@@ -20,7 +20,8 @@ public class CSSShare extends KrawczykShare {
      * A CSS Share (Krawczyk with fingerprinting)
      */
     @SuppressFBWarnings("EI_EXPOSE_REP2")
-    public CSSShare(byte id, byte[] body, Map<Byte, byte[]> fingerprints, int originalLength, int encAlgorithm, byte[] encKey) throws InvalidParametersException {
+    public CSSShare(byte id, byte[] body, Map<Byte, byte[]> fingerprints, int originalLength,
+                    int encAlgorithm, byte[] encKey) throws InvalidParametersException {
         super(id, body, originalLength, encAlgorithm, encKey);
         this.fingerprints = fingerprints;
     }

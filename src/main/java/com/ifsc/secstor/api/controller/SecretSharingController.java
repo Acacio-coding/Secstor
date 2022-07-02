@@ -3,10 +3,12 @@ package com.ifsc.secstor.api.controller;
 import com.at.archistar.crypto.data.InvalidParametersException;
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.at.archistar.crypto.secretsharing.WeakSecurityException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ifsc.secstor.api.dto.ReconstructDTO;
 import com.ifsc.secstor.api.dto.SplitDTO;
 import com.ifsc.secstor.api.service.SecretSharingImplementation;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,14 +31,15 @@ public class SecretSharingController {
     }
 
     @PostMapping(SECRET_SHARING_SPLIT)
-    public ResponseEntity<Object> split(@RequestBody @Validated SplitDTO splitDTO) throws UnsupportedEncodingException, InvalidVSSScheme {
+    public ResponseEntity<Object> split(@RequestBody @Validated SplitDTO splitDTO) throws UnsupportedEncodingException,
+            InvalidVSSScheme {
         return ResponseEntity.status(HttpStatus.OK).body(this.secretSharingService.split(splitDTO));
     }
 
     @PostMapping(SECRET_SHARING_RECONSTRUCT)
-    public ResponseEntity<Object> reconstruct(@RequestBody ReconstructDTO reconstructDTO) throws UnsupportedEncodingException,
-            InvalidParametersException, InvalidVSSScheme, ReconstructionException {
-
+    public ResponseEntity<Object> reconstruct(@RequestBody ReconstructDTO reconstructDTO)
+            throws UnsupportedEncodingException, InvalidParametersException, InvalidVSSScheme, ReconstructionException,
+            JsonProcessingException {
         return ResponseEntity.status(HttpStatus.OK).body(this.secretSharingService.reconstruct(reconstructDTO));
     }
 }

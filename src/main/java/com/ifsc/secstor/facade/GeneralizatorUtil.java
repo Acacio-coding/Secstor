@@ -50,7 +50,6 @@ public final class GeneralizatorUtil {
     public static  List<String> receiveDataWithLevel(List<Object> data, String label, int level) {
         getNullSafetyList(data);
 
-
         if (data.stream().allMatch(current -> current instanceof Integer)) {
             List<Integer> toGeneralize =  data.stream().map(current -> (Integer) current).toList();
             return generalizeIntegersWithRange(label, toGeneralize, level);
@@ -332,8 +331,6 @@ public final class GeneralizatorUtil {
         return getGeneralizedIntegers(label, nullSafetyNumberRows, max, min);
     }
 
-
-
     //Generalize Double
     public static List<String> generalizeDoubles(final String label, final List<Double> data) {
         final List<Double> nullSafetyNumberRows = getNullSafetyList(data);
@@ -356,8 +353,6 @@ public final class GeneralizatorUtil {
         return getGeneralizedDoubles(label, nullSafetyNumberRows, max, min);
     }
 
-
-
     //Generalize Strings
     public static List<String> generalizeStrings(final List<String> data) {
         validateStringGeneralization(data);
@@ -372,9 +367,6 @@ public final class GeneralizatorUtil {
 
         return generalizedData;
     }
-
-
-
 
     public static List<String> generalizeStringsWithLevel(final List<String> data, int level) {
         validateStringGeneralization(data);
@@ -391,8 +383,6 @@ public final class GeneralizatorUtil {
 
         return generalizedData;
     }
-
-
 
     //Generalize dates
     public static List<String> generalizeDates(final String label, final List<String> data) {
