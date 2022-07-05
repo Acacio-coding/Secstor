@@ -186,7 +186,7 @@ public class AnonymizationServiceImplementation implements AnonymizationService 
 
     private int getLevel(JSONObject baseObject) {
         try {
-            return (int) baseObject.get(GENERALIZATION_LEVEL);
+            return baseObject.getInt(GENERALIZATION_LEVEL);
         } catch (Exception exception) {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
                     INVALID_GENERALIZATION_LEVEL, DATA_ANONYMIZATION_BASE_AND_ANONYMIZE);
@@ -213,7 +213,6 @@ public class AnonymizationServiceImplementation implements AnonymizationService 
             data.put(i, currentObject);
         }
     }
-
 
     private List<String> filterIdentifier(JSONObject attribute_config) {
         return attribute_config.keySet()
