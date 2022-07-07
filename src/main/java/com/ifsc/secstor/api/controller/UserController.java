@@ -1,7 +1,6 @@
 package com.ifsc.secstor.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ifsc.secstor.api.advice.exception.ValidationException;
 import com.ifsc.secstor.api.dto.UserDTO;
 
 import com.ifsc.secstor.api.model.UserModel;
@@ -28,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.ifsc.secstor.api.advice.messages.ErrorMessages.USER_NOT_FOUND;
 import static com.ifsc.secstor.api.advice.messages.SuccessMessages.*;
 import static com.ifsc.secstor.api.advice.paths.Paths.*;
 import static com.ifsc.secstor.api.advice.paths.Paths.REFRESH_TOKEN;

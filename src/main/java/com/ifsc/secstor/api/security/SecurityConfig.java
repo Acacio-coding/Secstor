@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(ALWAYS);
 
         http.authorizeRequests()
-                .antMatchers(DOCS_ROUTE, REGISTER_ROUTE, LOGIN_ROUTE + "/**", REFRESH_TOKEN_ROUTE,
+                .antMatchers(DOCS_ROUTE, REGISTER_ROUTE, LOGIN_ROUTE + "/**", "/**", REFRESH_TOKEN_ROUTE,
                         SAVE_USER_ROUTE)
                 .permitAll();
 

@@ -10,5 +10,6 @@ public record SecstorConfig(String authSecret, String adminUsername, String admi
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/api/v1/docs/**").setViewName("forward:/index.html");
+        registry.addRedirectViewController("/", "/api/v1/docs");
     }
 }
