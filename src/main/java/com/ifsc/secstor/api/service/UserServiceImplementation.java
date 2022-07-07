@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,15 +46,17 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = this.userRepository.findByUsername(username);
+        var user = this.userRepository.findByUsername(username);;
 
-        if (user == null)
+
+        if (user == null) {
             throw new ValidationException(HttpStatus.NOT_FOUND, USER_NOT_FOUND, LOGIN_ROUTE);
+        }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new User(user.getUsername(), user.getPassword(), authorities);
     }
 
     @Override
@@ -121,7 +124,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
         var user = new UserModel();
 
-        if (userDTO.getRole().equalsIgnoreCase(CLIENT))
+        if (userDTO.getRole() == null || userDTO.getRole().equalsIgnoreCase(CLIENT))
             user.setRole(Role.CLIENT);
         else if (userDTO.getRole().equalsIgnoreCase(ADMINISTRATOR))
             user.setRole(Role.ADMINISTRATOR);

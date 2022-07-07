@@ -1,4 +1,4 @@
-package com.ifsc.secstor.api.security.facade;
+package com.ifsc.secstor.facade.facade;
 
 import com.ifsc.secstor.api.advice.exception.ValidationException;
 import org.apache.commons.lang3.time.DateUtils;

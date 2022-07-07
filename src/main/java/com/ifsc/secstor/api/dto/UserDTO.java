@@ -1,5 +1,6 @@
 package com.ifsc.secstor.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -27,6 +28,6 @@ public class UserDTO {
             message = INVALID_PASSWORD)
     private String password;
 
-    @NotBlank(message = NULL_ROLE)
+    @Schema(hidden = true)
     private String role;
 }

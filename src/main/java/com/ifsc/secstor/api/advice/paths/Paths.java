@@ -23,13 +23,12 @@ public class Paths {
     public static final String REFRESH_TOKEN = "/token/refresh";
     public static final String REGISTER_BASE = "/v1";
     public static final String REGISTER = "/register";
-
-
     public static final String LOGIN_ROUTE = "/api/v1/login";
     public static final String REFRESH_TOKEN_ROUTE = "/api/v1/token/refresh/**";
     public static final String REFRESH_TOKEN_ROUTE_AUTH = "/api/v1/token/refresh";
     public static final String SAVE_USER_ROUTE = "/api/v1/user/save/**";
     public static final String SPLIT_ROUTE = "/api/v1/secret-sharing/split/**";
+    public static final String LOGIN = "/login";
     public static final String RECONSTRUCT_ROUTE = "/api/v1/secret-sharing/reconstruct/**";
     public static final String ANONYMIZATION_ROUTE = "/api/v1/data-anonymization/anonymize/**";
     public static final String GET_USERS_ROUTE = "/api/v1/users/**";
@@ -40,4 +39,8 @@ public class Paths {
     public static final String CSS_ROUTE = "/css/**";
     public static final String JS_ROUTE = "/js/**";
     public static final String IMG_ROUTE = "/img/**";
+    public static final String DOCS_ROUTE = "/api/v1/docs";
+    public static final String SWAGGER_DOCS_ROUTE = "/v3/api-docs/**";
+    public static final String SWAGGER_DOCS_UI_ROUTE = "/swagger-ui.html";
+    public static final String SWAGGER_DOCS_UI_PATH_ROUTE = "/swagger-ui/**";
 }

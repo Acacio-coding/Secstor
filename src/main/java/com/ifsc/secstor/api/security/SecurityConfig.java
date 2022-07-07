@@ -1,7 +1,7 @@
 package com.ifsc.secstor.api.security;
 
 import com.ifsc.secstor.api.model.Role;
-import com.ifsc.secstor.api.security.entrypoint.CustomAuthenticationEntryPoint;
+import com.ifsc.secstor.api.security.filter.entrypoint.CustomAuthenticationEntryPoint;
 import com.ifsc.secstor.api.security.handler.AuthorizationHandler;
 import com.ifsc.secstor.api.security.filter.AuthenticationFilter;
 import com.ifsc.secstor.api.security.filter.AuthorizationFilter;
@@ -36,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(this.userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManagerBean());
@@ -43,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers(LOGIN_ROUTE + "/**",
+                        DOCS_ROUTE,
                         REFRESH_TOKEN_ROUTE,
                         SAVE_USER_ROUTE,
                         SPLIT_ROUTE,
@@ -54,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(ALWAYS);
 
         http.authorizeRequests()
-                .antMatchers(REGISTER_ROUTE, LOGIN_ROUTE + "/**", REFRESH_TOKEN_ROUTE, SAVE_USER_ROUTE)
+                .antMatchers(DOCS_ROUTE, REGISTER_ROUTE, LOGIN_ROUTE + "/**", REFRESH_TOKEN_ROUTE,
+                        SAVE_USER_ROUTE)
                 .permitAll();
 
         http.authorizeRequests().antMatchers(POST, SPLIT_ROUTE, RECONSTRUCT_ROUTE, ANONYMIZATION_ROUTE)
@@ -89,7 +93,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(STATIC_ROUTE)
                 .antMatchers(CSS_ROUTE)
                 .antMatchers(JS_ROUTE)
-                .antMatchers(IMG_ROUTE);
+                .antMatchers(IMG_ROUTE)
+                .antMatchers(SWAGGER_DOCS_ROUTE,
+                                        SWAGGER_DOCS_UI_ROUTE,
+                                        SWAGGER_DOCS_UI_PATH_ROUTE);
     }
 
     @Bean

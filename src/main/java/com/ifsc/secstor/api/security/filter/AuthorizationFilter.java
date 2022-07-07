@@ -1,9 +1,11 @@
 package com.ifsc.secstor.api.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ifsc.secstor.api.advice.exception.ValidationException;
 import com.ifsc.secstor.api.model.UserErrorModel;
 import com.ifsc.secstor.api.security.jwt.JWTUtils;
 import lombok.NonNull;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -45,7 +47,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             }
         } else if (request.getServletPath().equals(REGISTER_ROUTE_AUTH)
-                || request.getServletPath().equals(SAVE_USER_AUTH)) {
+                || request.getServletPath().equals(SAVE_USER_AUTH)
+                || request.getServletPath().equals(DOCS_ROUTE)) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
