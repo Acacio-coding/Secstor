@@ -4,6 +4,7 @@ import com.at.archistar.crypto.data.InvalidParametersException;
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.at.archistar.crypto.secretsharing.WeakSecurityException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ifsc.secstor.api.config.SecstorConfig;
 import com.ifsc.secstor.api.dto.ReconstructDTO;
 import com.ifsc.secstor.api.dto.SplitDTO;
 import com.ifsc.secstor.api.service.SecretSharingImplementation;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,13 +29,10 @@ import static com.ifsc.secstor.api.util.Constants.*;
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(SECRET_SHARING_BASE)
+@RequiredArgsConstructor
 public class SecretSharingController {
 
     private final SecretSharingImplementation secretSharingService;
-
-    public SecretSharingController() throws WeakSecurityException, NoSuchAlgorithmException {
-        this.secretSharingService = new SecretSharingImplementation(10, 5);
-    }
 
     @PostMapping(SECRET_SHARING_SPLIT)
     @Operation(summary = SPLIT_TITLE, description =  SPLIT_DESCRIPTION, tags = SECRET_SHARING_TAG)

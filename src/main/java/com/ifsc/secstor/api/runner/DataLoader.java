@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
     private final NumberServiceImplementation numberServiceImplementation;
-    private final SecstorConfig config;
 
     @Override
     public void run(ApplicationArguments args) {
