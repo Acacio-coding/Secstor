@@ -1,7 +1,8 @@
-package com.ifsc.secstor.facade.facade;
+package com.ifsc.secstor.facade;
 
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.ifsc.secstor.api.advice.exception.ValidationException;
+import com.ifsc.secstor.api.config.SecstorConfig;
 import com.ifsc.secstor.api.model.IndexKeyPair;
 import com.ifsc.secstor.api.model.PVSSShareModel;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
@@ -10,6 +11,7 @@ import com.ufsc.das.gcseg.secretsharing.SharestoCombine;
 import com.ufsc.das.gcseg.secretsharing.SplitedShares;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -21,8 +23,11 @@ import static com.ifsc.secstor.api.advice.paths.Paths.SECRET_SHARING_BASE_AND_RE
 import static com.ifsc.secstor.api.util.Constants.*;
 
 @RequiredArgsConstructor
+@Component
 public class PVSSEngine implements Engine {
     private final SecretShareEngine engine;
+
+    private final SecstorConfig config;
 
     @Override
     public Object split(String data) throws UnsupportedEncodingException, InvalidVSSScheme {
@@ -83,12 +88,12 @@ public class PVSSEngine implements Engine {
     }
 
     private void validateAllIndexAndKey(List<IndexKeyPair> keyObjectList) {
-        if (keyObjectList.size() > 10) {
+        if (keyObjectList.size() > config.n()) {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
                     OUT_OF_BOUNDS_PARAMETER(SHARE), SECRET_SHARING_BASE_AND_RECONSTRUCT);
         }
 
-        if (keyObjectList.size() < 5) {
+        if (keyObjectList.size() < config.k()) {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
                     INVALID_PARAMETER_SIZE(SHARE), SECRET_SHARING_BASE_AND_RECONSTRUCT);
         }

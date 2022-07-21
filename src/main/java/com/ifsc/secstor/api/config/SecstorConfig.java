@@ -5,7 +5,8 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @ConfigurationProperties("secstor")
-public record SecstorConfig(String authSecret, String adminUsername, String adminPassword) implements WebMvcConfigurer {
+public record SecstorConfig(String authSecret, String adminUsername, String adminPassword, int n, int k)
+        implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

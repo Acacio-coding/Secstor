@@ -1,4 +1,4 @@
-package com.ifsc.secstor.facade.facade;
+package com.ifsc.secstor.facade;
 
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;

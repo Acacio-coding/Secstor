@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,13 +29,10 @@ import static com.ifsc.secstor.api.util.Constants.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping(SECRET_SHARING_BASE)
 @SecurityRequirement(name = "bearerAuth")
+@RequiredArgsConstructor
 public class SecretSharingController {
 
     private final SecretSharingImplementation secretSharingService;
-
-    public SecretSharingController() throws WeakSecurityException, NoSuchAlgorithmException {
-        this.secretSharingService = new SecretSharingImplementation(10, 5);
-    }
 
     @PostMapping(SECRET_SHARING_SPLIT)
     @Operation(summary = SPLIT_TITLE, description =  SPLIT_DESCRIPTION, tags = SECRET_SHARING_TAG)

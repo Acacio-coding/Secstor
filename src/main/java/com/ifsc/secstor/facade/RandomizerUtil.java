@@ -1,4 +1,4 @@
-package com.ifsc.secstor.facade.facade;
+package com.ifsc.secstor.facade;
 
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;

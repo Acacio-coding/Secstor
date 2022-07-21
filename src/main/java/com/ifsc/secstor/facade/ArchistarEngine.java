@@ -1,14 +1,16 @@
-package com.ifsc.secstor.facade.facade;
+package com.ifsc.secstor.facade;
 
 import com.at.archistar.crypto.*;
 import com.at.archistar.crypto.data.*;
 import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.ifsc.secstor.api.advice.exception.ReconstructException;
 import com.ifsc.secstor.api.advice.exception.ValidationException;
+import com.ifsc.secstor.api.config.SecstorConfig;
 import com.ifsc.secstor.api.model.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -18,8 +20,11 @@ import static com.ifsc.secstor.api.advice.paths.Paths.SECRET_SHARING_BASE_AND_RE
 import static com.ifsc.secstor.api.util.Constants.*;
 
 @RequiredArgsConstructor
+@Component
 public class ArchistarEngine implements Engine {
     private final CryptoEngine engine;
+
+    private final SecstorConfig config;
 
     @Override
     public Object split(String data) {
@@ -433,12 +438,12 @@ public class ArchistarEngine implements Engine {
     }
 
     private void validateAllIndexAndKey(List<IndexKeyPair> keyObjectList, String type) {
-        if (keyObjectList.size() > 10) {
+        if (keyObjectList.size() > config.n()) {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
                     OUT_OF_BOUNDS_PARAMETER(type), SECRET_SHARING_BASE_AND_RECONSTRUCT);
         }
 
-        if (keyObjectList.size() < 5) {
+        if (keyObjectList.size() < config.k()) {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
                     INVALID_PARAMETER_SIZE(type), SECRET_SHARING_BASE_AND_RECONSTRUCT);
         }
@@ -534,7 +539,7 @@ public class ArchistarEngine implements Engine {
             throw new ValidationException(HttpStatus.BAD_REQUEST,
                     NULL_PARAMETER(type), SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
-        if (parameterList.size() < 5)
+        if (parameterList.size() < config.k())
             throw new ValidationException(HttpStatus.BAD_REQUEST,
                     NOT_ENOUGH_PARAMETERS(type), SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
@@ -545,7 +550,7 @@ public class ArchistarEngine implements Engine {
                 throw new ValidationException(HttpStatus.BAD_REQUEST,
                         NULL_PARAMETER(innerType), SECRET_SHARING_BASE_AND_RECONSTRUCT);
 
-            if (innerArray.size() < 5)
+            if (innerArray.size() < config.k())
                 throw new ValidationException(HttpStatus.BAD_REQUEST,
                         NOT_ENOUGH_PARAMETERS(innerType), SECRET_SHARING_BASE_AND_RECONSTRUCT);
         }

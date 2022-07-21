@@ -9,16 +9,18 @@ import com.at.archistar.crypto.secretsharing.ReconstructionException;
 import com.at.archistar.crypto.secretsharing.WeakSecurityException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsc.secstor.api.advice.exception.ValidationException;
+import com.ifsc.secstor.api.config.SecstorConfig;
 import com.ifsc.secstor.api.dto.ReconstructDTO;
 import com.ifsc.secstor.api.dto.SplitDTO;
 import com.ifsc.secstor.api.model.*;
-import com.ifsc.secstor.facade.facade.ArchistarEngine;
-import com.ifsc.secstor.facade.facade.Engine;
-import com.ifsc.secstor.facade.facade.PVSSEngine;
+import com.ifsc.secstor.facade.ArchistarEngine;
+import com.ifsc.secstor.facade.Engine;
+import com.ifsc.secstor.facade.PVSSEngine;
 import com.ufsc.das.gcseg.pvss.exception.InvalidVSSScheme;
 import com.ufsc.das.gcseg.secretsharing.SecretShareEngine;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -28,6 +30,7 @@ import static com.ifsc.secstor.api.advice.paths.Paths.SECRET_SHARING_BASE_AND_RE
 import static com.ifsc.secstor.api.advice.paths.Paths.SECRET_SHARING_BASE_AND_SPLIT;
 import static com.ifsc.secstor.api.util.Constants.*;
 
+@Component
 public class SecretSharingImplementation implements SecretSharingService {
     private final Engine shamir;
     private final Engine pss;
@@ -35,12 +38,12 @@ public class SecretSharingImplementation implements SecretSharingService {
     private final Engine krawczyk;
     private final Engine pvss;
 
-    public SecretSharingImplementation(int n, int k) throws WeakSecurityException, NoSuchAlgorithmException {
-        this.shamir = new ArchistarEngine(new ShamirEngine(n, k));
-        this.pss = new ArchistarEngine(new PSSEngine(n, k));
-        this.css = new ArchistarEngine(new CSSEngine(n, k));
-        this.krawczyk = new ArchistarEngine(new KrawczykEngine(n, k));
-        this.pvss = new PVSSEngine(new SecretShareEngine(n, k));
+    public SecretSharingImplementation(SecstorConfig config) throws WeakSecurityException, NoSuchAlgorithmException {
+        this.shamir = new ArchistarEngine(new ShamirEngine(config.n(), config.k()), config);
+        this.pss = new ArchistarEngine(new PSSEngine(config.n(), config.k()), config);
+        this.css = new ArchistarEngine(new CSSEngine(config.n(), config.k()), config);
+        this.krawczyk = new ArchistarEngine(new KrawczykEngine(config.n(), config.k()), config);
+        this.pvss = new PVSSEngine(new SecretShareEngine(config.n(), config.k()), config);
     }
 
     @Override
