@@ -22,7 +22,10 @@ Agora siga os seguintes passos:
 1. Abra o projeto com a IDE ou editor de código de sua preferência;
 2. Crie um arquivo chamado "<b>config.properties</b>" dentro da pasta <i><b>resources</b></i>, localizado em "<b>src/main</b>";
 3. Adicione as seguintes linhas no arquivo criado adaptando os parâmetros para o seu ambiente:
+
 ```
+server.port=PORTA DESEJADA
+
 spring.datasource.url=jdbc:mysql://localhost:3306/NOME DO BANCO DE DADOS?createDatabaseIfNotExist=true
 spring.datasource.username=USUÁRIO DO BANCO DE DADOS
 spring.datasource.password=SENHA DO BANCO DE DADOS
@@ -31,13 +34,18 @@ secstor.auth-secret=SEGREDO UTILIZADO NA GERAÇÃO DOS TOKENS
 
 secstor.admin-username=USUÁRIO ADMINISTRADOR INICIAL
 secstor.admin-password=SENHA DO USUÁRIO ADMINISTRADOR INICIAL
+
+secstor.n=NÚMERO DE CHAVES GERADAS NO SPLIT
+secstor.k=NÚMERO MÍNIMO DE CHAVES UTILIZADAS NO RECONSTRUCT
 ```
+
 Obs.: o endereço do banco de dados e a porta também podem mudar, mas para a execução em uma máquina local, pode se manter os mesmos utilizados acima.
 
 4. A partir da ferramente realize um <i><b>build</b></i> para que os arquivos de código fonte sejam compilados e os arquivos de saída (para execução) sejam gerados;
 5. Execute o projeto a partir da classe que contém o método <i><b>main</b></i>.
 
 ## Referências
+
 T. Loruenser, A. Happe, D. Slamanig: "ARCHISTAR: Towards Secure and Robust Cloud Based Data Sharing"; Vortrag: Cloud Computing Technology and Science (CloudCom), 2015, Vancouver, Canada; 30.11.2015 - 03.12.2015; in: "CloudCom 2015", IEEE, (2016), S. 371 - 378.
 
 Disponível em: <https://github.com/Archistar/archistar-smc>

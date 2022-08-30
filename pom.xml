@@ -15,6 +15,7 @@
 	<description>Rest API para a aplicação de algoritmos de compartilhamento de segredo e anonimização de dados para a adequação de sistemas à LGPD</description>
 	<properties>
 		<java.version>17</java.version>
+		<exec.cleanupDaemonThreads>false</exec.cleanupDaemonThreads>
 	</properties>
 
 	<dependencies>
