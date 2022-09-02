@@ -6,4 +6,8 @@ public interface NumberService {
     NumberModel getNumbers(Long id);
 
     void saveNumber(String groupPrimeOrder, String g1, String g2, String secret);
+
+    boolean existsByG1(String g1);
+
+    void deleteAll();
 }

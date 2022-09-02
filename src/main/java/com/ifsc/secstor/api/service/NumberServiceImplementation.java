@@ -29,4 +29,14 @@ public class NumberServiceImplementation implements NumberService {
 
         this.numberRepository.save(numberModel);
     }
+
+    @Override
+    public boolean existsByG1(String g1) {
+        return this.numberRepository.existsByG1(g1);
+    }
+
+    @Override
+    public void deleteAll() {
+        this.numberRepository.deleteAll();
+    }
 }
