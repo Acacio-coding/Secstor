@@ -8,6 +8,7 @@ O objetivo é desenvolver uma biblioteca ou uma api para a utilização de algor
 - JRE 1.8.0 ou superior
 - MySQL 8.0.27 ou superior
 - Lombok Annotations Support for VS Code (extensão para o <b>Visual Studio Code</b>)
+- Docker (opcional)
 
 ## Para utilizar o projeto
 
@@ -41,8 +42,14 @@ secstor.k=NÚMERO MÍNIMO DE CHAVES UTILIZADAS NO RECONSTRUCT
 
 Obs.: o endereço do banco de dados e a porta também podem mudar, mas para a execução em uma máquina local, pode se manter os mesmos utilizados acima.
 
-4. A partir da ferramente realize um <i><b>build</b></i> para que os arquivos de código fonte sejam compilados e os arquivos de saída (para execução) sejam gerados;
-5. Execute o projeto a partir da classe que contém o método <i><b>main</b></i>.
+4. Caso esteja utilizando docker, utilize o comando abaixo, para que o container do banco de dados seja criado:
+
+```
+docker-compose up --build --force-recreate
+```
+
+5. A partir da ferramente realize um <i><b>build</b></i> para que os arquivos de código fonte sejam compilados e os arquivos de saída (para execução) sejam gerados;
+6. Execute o projeto a partir da classe que contém o método <i><b>main</b></i>.
 
 ## Referências
 

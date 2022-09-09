@@ -75,7 +75,7 @@ public class Constants {
     public static final String ANONYMIZATION_DESCRIPTION = "A partir dos parâmetros para cada campo da request, utiliza uma técnica de anonimização de dados (generalização ou randomização). A a generalização de textos pode ser total (realiza uma supressão), por nível especificado, ou generalização pelo menor nível de diferença entre as informações onde o nível é a posição na string";
     public static final String ANONYMIZATION_TAG = "Anonimização de Dados";
     public static final String ANONYMIZATION_RESPONSE_SUCCESS = "[{\"nome\":\"testing******\"},{\"nome\":\"testing******\"}]";
-    public static final String ANONYMIZATION_RESPONSE_ERROR = "{\"status\":400,\"timestamp\":\"04/07/2022 21:03:20\",\"title\":\"Validation Error\",\"message\":\"Method provided for parameter: NOME is invalid, it must be eitherg eneralization or randomization\",\"path\":\"/api/v1/data-anonymization/anonymize\"}";
+    public static final String ANONYMIZATION_RESPONSE_ERROR = "{\"status\":400,\"timestamp\":\"04/07/2022 21:03:20\",\"title\":\"Validation Error\",\"message\":\"Method provided for parameter: NOME is invalid, it must be either generalization or randomization\",\"path\":\"/api/v1/data-anonymization/anonymize\"}";
     public static final String ANONYMIZATION_DTO_GEN_LEVEL_DESC = "Parâmetro de configuração para todos os atributos que devem ser generalizados";
     public static final String ANONYMIZATION_DTO_GEN_LEVEL_EXAMPLE = "6";
     public static final String ANONYMIZATION_DTO_ATTR_CONFIG_DESC = "Configurações para cada atributo presente na chave \"data\", para cada atributo deverá haver uma chave \"classification\" que pode ser identifier or sensitive e uma chave \"method\" que pode ser generalization ou generalization";

@@ -1,31 +1,33 @@
 package com.ifsc.secstor.api.runner;
 
 import com.ifsc.secstor.api.config.SecstorConfig;
-import com.ifsc.secstor.api.dto.UserDTO;
+import com.ifsc.secstor.api.model.Role;
+import com.ifsc.secstor.api.model.UserModel;
+import com.ifsc.secstor.api.repository.UserRepository;
 import com.ifsc.secstor.api.service.NumberServiceImplementation;
-import com.ifsc.secstor.api.service.UserServiceImplementation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import static com.ifsc.secstor.api.util.Constants.ADMINISTRATOR;
 
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements ApplicationRunner {
 
-    private final UserServiceImplementation userServiceImplementation;
+    private final UserRepository userRepository;
     private final NumberServiceImplementation numberServiceImplementation;
     private final SecstorConfig config;
 
     @Override
     public void run(ApplicationArguments args) {
         //Admin user
-        if (this.userServiceImplementation.findUserByUsername(config.adminUsername()) == null) {
-            this.userServiceImplementation.saveUser(new UserDTO(config.adminUsername(), config.adminPassword(),
-                    ADMINISTRATOR.toUpperCase()));
+        if (!this.userRepository.existsByUsername(config.adminUsername())) {
+            this.userRepository.save(new UserModel(null, config.adminUsername(),
+                    config.adminPassword(), Role.ADMINISTRATOR));
+
         }
+
 
         //PVSS Numbers
         if (this.numberServiceImplementation.existsByG1("3799057160937092801630750438916289126229892053406182295891701918335325814837295153756930136392994500565748561567090726903736682933820322225260746882745781")) {

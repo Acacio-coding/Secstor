@@ -21,7 +21,7 @@ public class Paths {
     public static final String SAVE_USER_AUTH = "/api/v1/user/save";
     public static final String SAVE_USER_PATH = "/api/v1/user/save";
     public static final String REFRESH_TOKEN = "/token/refresh";
-    public static final String REGISTER_BASE = "/v1";
+    public static final String REGISTER_BASE = "/api/v1";
     public static final String REGISTER = "/register";
     public static final String LOGIN_ROUTE = "/api/v1/login";
     public static final String REFRESH_TOKEN_ROUTE = "/api/v1/token/refresh/**";
@@ -33,8 +33,8 @@ public class Paths {
     public static final String ANONYMIZATION_ROUTE = "/api/v1/data-anonymization/anonymize/**";
     public static final String GET_USERS_ROUTE = "/api/v1/users/**";
     public static final String USER_ROUTE = "/api/v1/user/**";
-    public static final String REGISTER_ROUTE = "/v1/register/**";
-    public static final String REGISTER_ROUTE_AUTH = "/v1/register";
+    public static final String REGISTER_ROUTE = "/api/v1/register/**";
+    public static final String REGISTER_ROUTE_AUTH = "/api/v1/register";
     public static final String STATIC_ROUTE = "/static/**";
     public static final String CSS_ROUTE = "/css/**";
     public static final String JS_ROUTE = "/js/**";

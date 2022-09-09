@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="content">
-                        <form class="w-100" id="registerInfo" novalidate th:action="@{/v1/register}" th:object="${user}" method="POST">
+                        <form class="w-100" id="registerInfo" novalidate th:action="@{/api/v1/register}" th:object="${user}" method="POST">
                             <div class="mb-3 w-100">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control w-100" name="username" id="username" autocomplete="off" th:data="${usernames}"

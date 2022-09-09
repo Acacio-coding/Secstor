@@ -1,6 +1,7 @@
 const validatePasswordInputInfo = (input) => {
     const invalidElement = document.createElement("div");
     invalidElement.classList.add("invalid-feedback");
+    invalidElement.id = "invalid-password";
 
     const value = input.value;
     const regex = new RegExp(
@@ -27,6 +28,7 @@ const validatePasswordInputInfo = (input) => {
 const validateUsernameInputInfo = (input, usernames) => {
     const invalidElement = document.createElement("div");
     invalidElement.classList.add("invalid-feedback");
+    invalidElement.id = "invalid-username";
 
     const value = input.value;
     const regex = new RegExp(
@@ -68,7 +70,9 @@ const removeErrorElements = (element) => {
 }
 
 const addElementAfter = (elementAfter, elementBefore) => {
-    elementBefore.parentNode.insertBefore(elementAfter, elementBefore.nextSibling);
+    if (!document.body.contains(document.getElementById(elementAfter.id))) {
+        elementBefore.parentNode.insertBefore(elementAfter, elementBefore.nextSibling);
+    }
 }
 
 const sendInfo = (usernames) => {
