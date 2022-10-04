@@ -32,14 +32,14 @@ public class ArchistarEngine implements Engine {
 
         Object toReturn;
 
-        if (engine.toString().contains("Shamir")) {
+        if (engine.toString().contains("shamir")) {
             toReturn = new ShamirShareModel(new ArrayList<>(), shares[0].getOriginalLength());
             fillShamirShareModel(shares, (ShamirShareModel) toReturn);
-        } else if (engine.toString().contains("PSS")) {
+        } else if (engine.toString().contains("pss")) {
             toReturn = new PSSShareModel(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     shares[0].getOriginalLength());
             fillPSSShareModel(shares, (PSSShareModel) toReturn);
-        } else if (engine.toString().contains("CSS")) {
+        } else if (engine.toString().contains("css")) {
             toReturn = new CSSShareModel(new ArrayList<>(), new ArrayList<>(),
                     new ArrayList<>(), shares[0].getOriginalLength(), ((CSSShare)shares[0]).getEncAlgorithm());
             fillCSSShareModel(shares, (CSSShareModel) toReturn);
@@ -114,11 +114,11 @@ public class ArchistarEngine implements Engine {
     public String reconstruct(Object requestDTO, boolean doYourBest) throws ReconstructionException {
         Share[] shares;
 
-        if (engine.toString().contains("Shamir")) {
+        if (engine.toString().contains("shamir")) {
             shares = createShamirShares(doYourBest, (ShamirShareModel) requestDTO);
-        } else if (engine.toString().contains("PSS")) {
+        } else if (engine.toString().contains("pss")) {
             shares = createPSSShares(doYourBest, (PSSShareModel) requestDTO);
-        } else if (engine.toString().contains("CSS")) {
+        } else if (engine.toString().contains("css")) {
             shares = createCSSShares(doYourBest, (CSSShareModel) requestDTO);
         } else {
             shares = createKrawczykShares(doYourBest, (KrawczykShareModel) requestDTO);
