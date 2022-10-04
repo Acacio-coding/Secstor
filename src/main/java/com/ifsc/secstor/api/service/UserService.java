@@ -26,4 +26,10 @@ public interface UserService {
     Map<String, String> refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     List<String> findAllUsernames();
+
+    boolean isAuthenticated();
+
+    boolean isAdmin();
+
+    String getAuthenticatedUsername();
 }

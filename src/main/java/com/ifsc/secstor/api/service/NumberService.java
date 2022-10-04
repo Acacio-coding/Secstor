@@ -3,11 +3,11 @@ package com.ifsc.secstor.api.service;
 import com.ifsc.secstor.api.model.NumberModel;
 
 public interface NumberService {
-    NumberModel getNumbers(Long id);
+    NumberModel getNumbers();
 
     void saveNumber(String groupPrimeOrder, String g1, String g2, String secret);
 
-    boolean existsByG1(String g1);
+    boolean isEmpty();
 
     void deleteAll();
 }

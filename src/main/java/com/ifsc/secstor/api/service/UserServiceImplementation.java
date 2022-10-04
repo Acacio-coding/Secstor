@@ -2,6 +2,7 @@ package com.ifsc.secstor.api.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ifsc.secstor.api.advice.exception.*;
+import com.ifsc.secstor.api.config.SecstorConfig;
 import com.ifsc.secstor.api.dto.UserDTO;
 import com.ifsc.secstor.api.model.Role;
 import com.ifsc.secstor.api.model.UserErrorModel;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,10 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ifsc.secstor.api.advice.messages.ErrorMessages.*;
 import static com.ifsc.secstor.api.advice.paths.Paths.*;
@@ -44,6 +43,8 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
+    private final SecstorConfig config;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = this.userRepository.findByUsername(username);;
@@ -57,6 +58,24 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
 
         return new User(user.getUsername(), user.getPassword(), authorities);
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        var context = SecurityContextHolder.getContext();
+        return context.getAuthentication().isAuthenticated();
+    }
+
+    @Override
+    public boolean isAdmin() {
+        var context = SecurityContextHolder.getContext();
+        return context.getAuthentication().getName().equals(config.adminUsername());
+    }
+
+    @Override
+    public String getAuthenticatedUsername() {
+        var context = SecurityContextHolder.getContext();
+        return context.getAuthentication().getName();
     }
 
     @Override

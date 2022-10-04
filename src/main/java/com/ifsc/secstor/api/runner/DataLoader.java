@@ -8,6 +8,7 @@ import com.ifsc.secstor.api.service.NumberServiceImplementation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 
@@ -18,19 +19,19 @@ public class DataLoader implements ApplicationRunner {
     private final UserRepository userRepository;
     private final NumberServiceImplementation numberServiceImplementation;
     private final SecstorConfig config;
+    private final PasswordEncoder encoder;
 
     @Override
     public void run(ApplicationArguments args) {
         //Admin user
         if (!this.userRepository.existsByUsername(config.adminUsername())) {
             this.userRepository.save(new UserModel(null, config.adminUsername(),
-                    config.adminPassword(), Role.ADMINISTRATOR));
+                    encoder.encode(config.adminPassword()), Role.ADMINISTRATOR));
 
         }
 
-
         //PVSS Numbers
-        if (this.numberServiceImplementation.existsByG1("3799057160937092801630750438916289126229892053406182295891701918335325814837295153756930136392994500565748561567090726903736682933820322225260746882745781")) {
+        if (!this.numberServiceImplementation.isEmpty()) {
             this.numberServiceImplementation.deleteAll();
         }
 

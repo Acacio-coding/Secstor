@@ -14,8 +14,8 @@ public class NumberServiceImplementation implements NumberService {
     private final NumberRepository numberRepository;
 
     @Override
-    public NumberModel getNumbers(Long id) {
-        return this.numberRepository.findById(id).orElse(null);
+    public NumberModel getNumbers() {
+        return this.numberRepository.getRandom();
     }
 
     @Override
@@ -31,9 +31,10 @@ public class NumberServiceImplementation implements NumberService {
     }
 
     @Override
-    public boolean existsByG1(String g1) {
-        return this.numberRepository.existsByG1(g1);
+    public boolean isEmpty() {
+        return this.numberRepository.isEmpty() == 0;
     }
+
 
     @Override
     public void deleteAll() {

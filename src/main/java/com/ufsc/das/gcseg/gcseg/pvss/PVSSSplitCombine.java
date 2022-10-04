@@ -32,9 +32,7 @@ public class PVSSSplitCombine {
 
 	public SplitedShares pVSSSplit(String secret) throws InvalidVSSScheme {
 		// Database implementation
-		int random = new SecureRandom().nextInt(1, 2000);
-
-		NumberModel bigIntegerNumbers = numberService.getNumbers((long) random);
+		NumberModel bigIntegerNumbers = numberService.getNumbers();
 
 		BigInteger groupPrimeOrder = new BigInteger(bigIntegerNumbers.getGroupPrimeOrder());
 		BigInteger g1 = new BigInteger(bigIntegerNumbers.getG1());

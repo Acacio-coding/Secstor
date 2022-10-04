@@ -70,8 +70,7 @@ public class PVSSEngine {
 	}
 
 	public BigInteger generateSecret() {
-		int random = new SecureRandom().nextInt(1, 2000);
-		return new BigInteger(numberService.getNumbers((long) random).getSecret());
+		return new BigInteger(numberService.getNumbers().getSecret());
 	}
 
 	public BigInteger[] generateSecretKeys() {
@@ -92,8 +91,7 @@ public class PVSSEngine {
 	}
 
 	private BigInteger generateRandomNumber() {
-		int random = new SecureRandom().nextInt(1, 2000);
-		return new BigInteger(numberService.getNumbers((long) random).getG1());
+		return new BigInteger(numberService.getNumbers().getG1());
 	}
 
 	public BigInteger generatePublicKey(BigInteger secretKey) {
