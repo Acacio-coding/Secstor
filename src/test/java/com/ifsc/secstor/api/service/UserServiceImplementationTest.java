@@ -1,6 +1,7 @@
 package com.ifsc.secstor.api.service;
 
 import com.ifsc.secstor.api.advice.exception.ValidationException;
+import com.ifsc.secstor.api.config.SecstorConfig;
 import com.ifsc.secstor.api.dto.UserDTO;
 import com.ifsc.secstor.api.model.Role;
 import com.ifsc.secstor.api.model.UserModel;
@@ -34,11 +35,14 @@ class UserServiceImplementationTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private SecstorConfig secstorConfig;
+
     private UserServiceImplementation userService;
 
     @BeforeEach
     void setUp() {
-        this.userService = new UserServiceImplementation(this.userRepository, this.passwordEncoder);
+        this.userService = new UserServiceImplementation(this.userRepository, this.passwordEncoder, this.secstorConfig);
     }
 
     @Test
