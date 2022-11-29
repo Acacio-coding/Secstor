@@ -114,11 +114,11 @@ public class ArchistarEngine implements Engine {
     public String reconstruct(Object requestDTO, boolean doYourBest) throws ReconstructionException {
         Share[] shares;
 
-        if (engine.toString().contains("shamir")) {
+        if (engine.toString().contains("Shamir")) {
             shares = createShamirShares(doYourBest, (ShamirShareModel) requestDTO);
-        } else if (engine.toString().contains("pss")) {
+        } else if (engine.toString().contains("PSS")) {
             shares = createPSSShares(doYourBest, (PSSShareModel) requestDTO);
-        } else if (engine.toString().contains("css")) {
+        } else if (engine.toString().contains("CSS")) {
             shares = createCSSShares(doYourBest, (CSSShareModel) requestDTO);
         } else {
             shares = createKrawczykShares(doYourBest, (KrawczykShareModel) requestDTO);
