@@ -9,3 +9,6 @@ services:
     environment:
       - MYSQL_DATABASE=secstor
       - MYSQL_ROOT_PASSWORD=secstor
+#     Caso não queira utilizar o usuário ROOT
+#      - MYSQL_USER=youruser
+#      - MYSQL_PASSWORD=yourpassword

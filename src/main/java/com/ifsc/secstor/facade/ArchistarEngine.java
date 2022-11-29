@@ -32,14 +32,14 @@ public class ArchistarEngine implements Engine {
 
         Object toReturn;
 
-        if (engine.toString().contains("shamir")) {
+        if (engine.toString().contains("Shamir")) {
             toReturn = new ShamirShareModel(new ArrayList<>(), shares[0].getOriginalLength());
             fillShamirShareModel(shares, (ShamirShareModel) toReturn);
-        } else if (engine.toString().contains("pss")) {
+        } else if (engine.toString().contains("PSS")) {
             toReturn = new PSSShareModel(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),
                     shares[0].getOriginalLength());
             fillPSSShareModel(shares, (PSSShareModel) toReturn);
-        } else if (engine.toString().contains("css")) {
+        } else if (engine.toString().contains("CSS")) {
             toReturn = new CSSShareModel(new ArrayList<>(), new ArrayList<>(),
                     new ArrayList<>(), shares[0].getOriginalLength(), ((CSSShare)shares[0]).getEncAlgorithm());
             fillCSSShareModel(shares, (CSSShareModel) toReturn);
